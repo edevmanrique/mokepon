@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mokepon: Fire and Darkness</title>
-    <script src="./js/script.js"></script>
+    <script src="./js/script.js" defer></script>
 </head>
 
 <body>
@@ -32,16 +32,16 @@
         <label for="thunderneg">Thunderneg ⚡🖤</label>
         <input type="radio" name="pets" id="thunderneg">
 
-        <button>Select</button>
+        <button class="select-pet__select" id="select-pet__select">Select</button>
     </section>
     <section class="select-attack" id="select-attack">
         <p>Your pet has <span>❤️❤️❤️</span></p>
         <p>Enemy's pet has <span>❤️❤️❤️</span></p>
         <h2>Select an attack</h2>
         <p>
-            <button>Fire 🔥</button>
-            <button>Electric ⚡</button>
-            <button>Darkness 🖤</button>
+            <button class="select-attack__fire" id="select-attack__fire">Fire 🔥</button>
+            <button class="select-attack__electric" id="select-attack__electric">Electric ⚡</button>
+            <button class="select-attack__darkness" id="select-attack__darkness">Darkness 🖤</button>
         </p>
     </section>
     <section class="messages" id="messages">
@@ -49,7 +49,7 @@
         <p>Enemy's pet attacks with darkness</p>
     </section>
     <section class="reset" id="reset">
-        <button>Reset</button>
+        <button class="reset__button" id="reset__button">Reset</button>
     </section>
 </body>
 
