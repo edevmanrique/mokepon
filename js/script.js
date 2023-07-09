@@ -2,12 +2,35 @@
 let petButton = document.getElementById('select-pet__select');
 petButton.addEventListener('click', selectPlayerPet);
 
+//Setting pets name
+let petName = document.getElementById('select-attack__my-pet');
+let enemyPetName = document.getElementById('select-attack__enemy-pet');
+
+//Setting pets buttons to choose
 let firePet = document.getElementById('burntrack')
 let electricPet = document.getElementById('glitch')
 let darknessPet = document.getElementById('mortus')
 let fireElectricPet = document.getElementById('inferstorm')
 let fireDarknessPet = document.getElementById('blazen')
 let electricDarknessPet = document.getElementById('thunderneg')
+
+//Setting attacks buttons
+let fireAttack = document.getElementById('select-attack__fire')
+fireAttack.addEventListener('click', fireMovement)
+let electricAttack = document.getElementById('select-attack__electric')
+electricAttack.addEventListener('click', electricMovement)
+let darknessAttack = document.getElementById('select-attack__darkness')
+darknessAttack.addEventListener('click', darknessMovement)
+
+//Gettin the movements section
+let movementsSection = document.getElementById('messages');
+
+//Getting the span in movements section to set name and attack done in the battle
+let petFightingName = document.getElementById('messages__player-pet')
+let petFightingAttack = document.getElementById('messages__player-attack')
+
+let enemyPetFightingName = document.getElementById('messages__enemy-pet')
+let enemyPetFightingAttack = document.getElementById('messages__enemy-attack')
 
 function getRandom(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min)
@@ -78,11 +101,63 @@ function getRandomEnemyPet() {
  * num variable is to know if is called by player or enemy
 */
 function setName(name, num) {
-    if (num == 1){
-        let petName = document.getElementById('select-attack__my-pet');
+    if (num == 1) {
         petName.innerHTML = name;
     } else {
-        let enemyPetName = document.getElementById('select-attack__enemy-pet');
         enemyPetName.innerHTML = name;
+    }
+}
+
+//These are the functions to define what happens with the player's movements
+function fireMovement() {
+    createMovementes(1, fireAttack.value)
+    setPetEnemyAttack();
+}
+
+function electricMovement() {
+    createMovementes(1, electricAttack.value)
+    setPetEnemyAttack();
+}
+
+function darknessMovement() {
+    createMovementes(1, darknessAttack.value)
+    setPetEnemyAttack();
+}
+
+//These are the functions to define enemy's movements
+function setPetEnemyAttack() {
+    let enemyAttack = getRandom(1, 3);
+    if (enemyAttack == 1) {
+        enemyFireMovement();
+    } else if (enemyAttack == 2) {
+        enemyElectricMovement();
+    } else {
+        enemyDarknessMovement();
+    }
+}
+
+function enemyFireMovement() {
+    createMovementes(2, fireAttack.value)
+}
+
+function enemyElectricMovement() {
+    createMovementes(2, electricAttack.value)
+}
+
+function enemyDarknessMovement() {
+    createMovementes(2, darknessAttack.value)
+}
+
+/*It works to generate p tags with the history of attacks in the battle
+ *n parameter is to know if it's the player or an enemy
+*/
+function createMovementes(n, attack){
+    let paragraph = document.createElement('p');
+    if(n == 1){
+        paragraph.innerHTML = petName.textContent + ' attacks with ' + attack;
+        movementsSection.appendChild(paragraph);
+    } else {
+        paragraph.innerHTML = enemyPetName.textContent + ' attacks with ' + attack;
+        movementsSection.appendChild(paragraph);
     }
 }
