@@ -9,14 +9,20 @@ const enemyPetName = document.getElementById('select-attack__enemy-pet');
 //Setting pets buttons to choose
 const firePet = document.getElementById('burntrack')
 const electricPet = document.getElementById('glitch')
-const darknessPet = document.getElementById('mortus')
+const darkPet = document.getElementById('mortus')
 const fireElectricPet = document.getElementById('inferstorm')
-const fireDarknessPet = document.getElementById('blazen')
-const electricDarknessPet = document.getElementById('thunderneg')
+const fireDarkPet = document.getElementById('blazen')
+const electricDarkPet = document.getElementById('thunderneg')
 
+//Setting player movements
 let attackMovement;
 let regenerationMovement;
 let protectionMovement;
+
+//Setting enemy movements
+let enemyAttackMovement;
+let enemyRegenerationMovement;
+let enemyProtectionMovement;
 
 //Setting movements buttons
 const attackMovementButton = document.getElementById('select-attack__fire')
@@ -25,7 +31,7 @@ const regenerationMovementButton = document.getElementById('select-attack__elect
 regenerationMovementButton.disabled = true;
 regenerationMovementButton.addEventListener('click', electricMovement)
 const protectionMovementButton = document.getElementById('select-attack__darkness')
-protectionMovementButton.addEventListener('click', darknessMovement)
+protectionMovementButton.addEventListener('click', darkMovement)
 
 //Gettin the movements section
 const movementsSection = document.getElementById('messages');
@@ -66,41 +72,29 @@ function getTwoRandom(first, second) {
 //We get the selected pet by the player
 function selectPlayerPet() {
     if (firePet.checked) {
-        attackMovement = 'Magma Storm';
-        regenerationMovement = 'Overheat';
-        protectionMovement = 'Sunny Day';
-        settingMovementButtons(attackMovement, regenerationMovement, protectionMovement);
+        setMovement('Magma Storm', 'Overheat', 'Sunny Day', 1);
+        setMovementButtons(attackMovement, regenerationMovement, protectionMovement);
         setName(firePet.value, 1)
     } else if (electricPet.checked) {
-        attackMovement = 'Thunder Punch';
-        regenerationMovement = 'Overdrive';
-        protectionMovement = 'Charge Beam';
-        settingMovementButtons(attackMovement, regenerationMovement, protectionMovement);
+        setMovement('Thunder Punch', 'Overdrive', 'Charge Beam', 1);
+        setMovementButtons(attackMovement, regenerationMovement, protectionMovement);
         setName(electricPet.value, 1)
-    } else if (darknessPet.checked) {
-        attackMovement = 'Dark Pulse';
-        regenerationMovement = 'Crunch';
-        protectionMovement = 'False Surrender';
-        settingMovementButtons(attackMovement, regenerationMovement, protectionMovement);
-        setName(darknessPet.value, 1)
+    } else if (darkPet.checked) {
+        setMovement('Dark Pulse', 'Crunch', 'False Surrender', 1);
+        setMovementButtons(attackMovement, regenerationMovement, protectionMovement);
+        setName(darkPet.value, 1)
     } else if (fireElectricPet.checked) {
-        attackMovement = 'Hot Lightning';
-        regenerationMovement = 'Fast Fireball';
-        protectionMovement = 'Magray';
-        settingMovementButtons(attackMovement, regenerationMovement, protectionMovement);
+        setMovement('Hot Lightning', 'Fast Fireball', 'Magray', 1);
+        setMovementButtons(attackMovement, regenerationMovement, protectionMovement);
         setName(fireElectricPet.value, 1)
-    } else if (fireDarknessPet.checked) {
-        attackMovement = 'Dark light';
-        regenerationMovement = 'Negative eruption';
-        protectionMovement = 'Mystical Fire';
-        settingMovementButtons(attackMovement, regenerationMovement, protectionMovement);
-        setName(fireDarknessPet.value, 1)
-    } else if (electricDarknessPet.checked) {
-        attackMovement = 'Infinite storm';
-        regenerationMovement = 'Electro darkness';
-        protectionMovement = 'Last Flash';
-        settingMovementButtons(attackMovement, regenerationMovement, protectionMovement);
-        setName(electricDarknessPet.value, 1)
+    } else if (fireDarkPet.checked) {
+        setMovement('Dark Light', 'Negative Eruption', 'Mystical Fire', 1);
+        setMovementButtons(attackMovement, regenerationMovement, protectionMovement);
+        setName(fireDarkPet.value, 1)
+    } else if (electricDarkPet.checked) {
+        setMovement('Infinite Storm', 'Electro Darkness', 'Last Flash', 1);
+        setMovementButtons(attackMovement, regenerationMovement, protectionMovement);
+        setName(electricDarkPet.value, 1)
     } else {
         alert('You have to select a pet');
     }
@@ -109,7 +103,7 @@ function selectPlayerPet() {
 }
 
 //Setting the movements buttons content
-function settingMovementButtons(attack, regeneration, protection){
+function setMovementButtons(attack, regeneration, protection) {
     attackMovementButton.value = attack;
     attackMovementButton.innerHTML = attack;
 
@@ -127,28 +121,47 @@ function getRandomEnemyPet() {
     switch (petNumber) {
         case 1:
             petEnemy = firePet.value;
+            setMovement('Magma Storm', 'Overheat', 'Sunny Day', 2);
             setName(petEnemy, 2);
             break;
         case 2:
             petEnemy = electricPet.value;
+            setMovement('Thunder Punch', 'Overdrive', 'Charge Beam', 2);
             setName(petEnemy, 2);
             break;
         case 3:
-            petEnemy = darknessPet.value;
+            petEnemy = darkPet.value;
+            setMovement('Dark Pulse', 'Crunch', 'False Surrender', 2);
             setName(petEnemy, 2);
             break;
         case 4:
             petEnemy = fireElectricPet.value;
+            setMovement('Hot Lightning', 'Fast Fireball', 'Magray', 2);
             setName(petEnemy, 2);
             break;
         case 5:
-            petEnemy = fireDarknessPet.value;
+            petEnemy = fireDarkPet.value;
+            setMovement('Dark Light', 'Negative Eruption', 'Mystical Fire', 2);
             setName(petEnemy, 2);
             break;
         case 6:
-            petEnemy = electricDarknessPet.value;
+            petEnemy = electricDarkPet.value;
+            setMovement('Infinite Storm', 'Electro Darkness', 'Last Flash', 2);
             setName(petEnemy, 2);
             break;
+    }
+}
+
+//We set the value of movements, n is to know if It's player or computer
+function setMovement(attack, regeneration, protection, n) {
+    if (n == 1) {
+        attackMovement = attack;
+        regenerationMovement = regeneration;
+        protectionMovement = protection;
+    } else {
+        enemyAttackMovement = attack;
+        enemyRegenerationMovement = regeneration;
+        enemyProtectionMovement = protection;
     }
 }
 
@@ -172,7 +185,11 @@ function fireMovement() {
         enemyPetHearts--;
     }
     updateHearts(2);
-    setPetEnemyAttack();
+    if(enemyPetHearts <= 0){
+        result();
+    } else {
+        setPetEnemyAttack();
+    }
 }
 
 function electricMovement() {
@@ -182,11 +199,15 @@ function electricMovement() {
     setPetEnemyAttack();
 }
 
-function darknessMovement() {
+function darkMovement() {
     createMovementes(1, protectionMovementButton.value)
     petProtection = true;
     updateHearts(1);
-    setPetEnemyAttack();
+    if(result()){
+        result();
+    } else {
+        setPetEnemyAttack();
+    }
 }
 
 //These are the functions to define enemy's movements
@@ -212,24 +233,27 @@ function setPetEnemyAttack() {
         enemyPetHearts++;
         enemyElectricMovement();
     } else {
-        enemyDarknessMovement();
+        enemyDarkMovement();
     }
 }
 
 function enemyFireMovement() {
-    createMovementes(2, attackMovementButton.value)
+    createMovementes(2, enemyAttackMovement)
     updateButtons()
     updateHearts(1)
+    if(petHearts <= 0){
+        result();
+    }
 }
 
 function enemyElectricMovement() {
-    createMovementes(2, regenerationMovementButton.value)
+    createMovementes(2, enemyRegenerationMovement)
     updateButtons()
     updateHearts(2);
 }
 
-function enemyDarknessMovement() {
-    createMovementes(2, protectionMovementButton.value)
+function enemyDarkMovement() {
+    createMovementes(2, enemyProtectionMovement)
     updateButtons()
     enemyPetProtection = true;
     updateHearts(2);
@@ -280,18 +304,29 @@ function updateHearts(n) {
     }
 }
 
-function updateButtons(){
-    if(petHearts == 3 && petProtection){
+function updateButtons() {
+    if (petHearts == 3 && petProtection) {
         regenerationMovementButton.disabled = true;
         protectionMovementButton.disabled = true;
-    } else if(petHearts == 3 && !petProtection){
+    } else if (petHearts == 3 && !petProtection) {
         regenerationMovementButton.disabled = true;
         protectionMovementButton.disabled = false;
-    } else if(petProtection){
+    } else if (petProtection) {
         regenerationMovementButton.disabled = false;
         protectionMovementButton.disabled = true;
     } else {
         regenerationMovementButton.disabled = false;
         protectionMovementButton.disabled = false;
+    }
+}
+
+function result(){
+    let paragraph = document.createElement('p');
+    if(petHearts <= 0){
+        paragraph.innerHTML = enemyPetName.textContent + ' wins';
+        movementsSection.appendChild(paragraph);
+    } else if(enemyPetHearts <= 0){
+        paragraph.innerHTML = petName.textContent + ' wins';
+        movementsSection.appendChild(paragraph);
     }
 }
