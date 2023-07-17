@@ -2,6 +2,15 @@
 const petButton = document.getElementById('select-pet__select');
 petButton.addEventListener('click', selectPlayerPet);
 
+//Setting HTML sections
+const petsSection = document.getElementById('select-pet');
+const movementsSection = document.getElementById('select-attack');
+movementsSection.style.display = 'none';
+const messagesSection = document.getElementById('messages');
+messagesSection.style.display = 'none';
+const resetSection = document.getElementById('reset');
+resetSection.style.display = 'none';
+
 //Setting pets name
 const petName = document.getElementById('select-attack__my-pet');
 const enemyPetName = document.getElementById('select-attack__enemy-pet');
@@ -33,8 +42,9 @@ regenerationMovementButton.addEventListener('click', electricMovement)
 const protectionMovementButton = document.getElementById('select-attack__darkness')
 protectionMovementButton.addEventListener('click', darkMovement)
 
-//Gettin the movements section
-const movementsSection = document.getElementById('messages');
+//Setting reset button
+const resetButton = document.getElementById('reset__button');
+resetButton.addEventListener('click', resetGame)
 
 //Getting the span in movements section to set name and attack done in the battle
 const petFightingName = document.getElementById('messages__player-pet')
@@ -44,8 +54,11 @@ const enemyPetFightingName = document.getElementById('messages__enemy-pet')
 const enemyPetFightingAttack = document.getElementById('messages__enemy-attack')
 
 //Setting the pets' hearts
-let petHearts = 3;
-let enemyPetHearts = 3;
+let petHearts = 8;
+let enemyPetHearts = 8;
+
+//We set a limit to know the maximum number of hearts
+const maximumHearts = petHearts;
 
 //We get the span with the hearts to update them after a movement
 const petLife = document.getElementById('select-attack__my-pet-hearts')
@@ -71,6 +84,10 @@ function getTwoRandom(first, second) {
 
 //We get the selected pet by the player
 function selectPlayerPet() {
+    petsSection.style.display = 'none';
+    movementsSection.style.display = 'block';
+    messagesSection.style.display = 'block';
+    updateHearts(3);
     if (firePet.checked) {
         setMovement('Magma Storm', 'Overheat', 'Sunny Day', 1);
         setMovementButtons(attackMovement, regenerationMovement, protectionMovement);
@@ -185,7 +202,7 @@ function fireMovement() {
         enemyPetHearts--;
     }
     updateHearts(2);
-    if(enemyPetHearts <= 0){
+    if (enemyPetHearts <= 0) {
         result();
     } else {
         setPetEnemyAttack();
@@ -203,7 +220,7 @@ function darkMovement() {
     createMovementes(1, protectionMovementButton.value)
     petProtection = true;
     updateHearts(1);
-    if(result()){
+    if (result()) {
         result();
     } else {
         setPetEnemyAttack();
@@ -213,11 +230,11 @@ function darkMovement() {
 //These are the functions to define enemy's movements
 function setPetEnemyAttack() {
     let enemyAttack;
-    if (enemyPetProtection && enemyPetHearts == 3) {
+    if (enemyPetProtection && enemyPetHearts == maximumHearts) {
         enemyAttack = 1;
     } else if (enemyPetProtection) {
         enemyAttack = getRandom(1, 2);
-    } else if (enemyPetHearts == 3) {
+    } else if (enemyPetHearts == maximumHearts) {
         enemyAttack = getTwoRandom(1, 3);
     } else {
         enemyAttack = getRandom(1, 3);
@@ -241,7 +258,7 @@ function enemyFireMovement() {
     createMovementes(2, enemyAttackMovement)
     updateButtons()
     updateHearts(1)
-    if(petHearts <= 0){
+    if (petHearts <= 0) {
         result();
     }
 }
@@ -266,10 +283,10 @@ function createMovementes(n, attack) {
     let paragraph = document.createElement('p');
     if (n == 1) {
         paragraph.innerHTML = petName.textContent + ' attacks with ' + attack;
-        movementsSection.appendChild(paragraph);
+        messagesSection.appendChild(paragraph);
     } else {
         paragraph.innerHTML = enemyPetName.textContent + ' attacks with ' + attack;
-        movementsSection.appendChild(paragraph);
+        messagesSection.appendChild(paragraph);
     }
 }
 
@@ -277,10 +294,10 @@ function createMovementes(n, attack) {
 function updateHearts(n) {
     let hearts = '';
     //Limit the quantity of hearts to be maximum 3
-    if (petHearts > 3) {
-        petHearts = 3;
-    } else if (enemyPetHearts > 3) {
-        enemyPetHearts = 3;
+    if (petHearts > maximumHearts) {
+        petHearts = maximumHearts;
+    } else if (enemyPetHearts > maximumHearts) {
+        enemyPetHearts = maximumHearts;
     }
 
     if (n == 1) {
@@ -292,7 +309,7 @@ function updateHearts(n) {
             hearts += '❤️';
         }
         petLife.textContent = hearts;
-    } else {
+    } else if (n == 2) {
         for (i = 0; i < enemyPetHearts; i++) {
             if (enemyPetProtection && (i == enemyPetHearts - 1)) {
                 hearts += '💛';
@@ -301,32 +318,53 @@ function updateHearts(n) {
             hearts += '❤️';
         }
         enemyPetLife.textContent = hearts;
+    } else if (n == 3) {
+        for (i = 0; i < maximumHearts; i++) {
+            hearts += '❤️';
+        }
+        petLife.textContent = hearts;
+        enemyPetLife.textContent = hearts;
     }
 }
 
 function updateButtons() {
-    if (petHearts == 3 && petProtection) {
+    if (petHearts <= 0 || enemyPetHearts <= 0) {
+        attackMovementButton.disabled = true;
         regenerationMovementButton.disabled = true;
-        protectionMovementButton.disabled = true;
-    } else if (petHearts == 3 && !petProtection) {
-        regenerationMovementButton.disabled = true;
-        protectionMovementButton.disabled = false;
-    } else if (petProtection) {
-        regenerationMovementButton.disabled = false;
         protectionMovementButton.disabled = true;
     } else {
-        regenerationMovementButton.disabled = false;
-        protectionMovementButton.disabled = false;
+        if (petHearts == maximumHearts && petProtection) {
+            regenerationMovementButton.disabled = true;
+            protectionMovementButton.disabled = true;
+        } else if (petHearts == maximumHearts && !petProtection) {
+            regenerationMovementButton.disabled = true;
+            protectionMovementButton.disabled = false;
+        } else if (petProtection) {
+            regenerationMovementButton.disabled = false;
+            protectionMovementButton.disabled = true;
+        } else {
+            regenerationMovementButton.disabled = false;
+            protectionMovementButton.disabled = false;
+        }
     }
 }
 
-function result(){
+function result() {
     let paragraph = document.createElement('p');
-    if(petHearts <= 0){
+    if (petHearts <= 0) {
         paragraph.innerHTML = enemyPetName.textContent + ' wins';
-        movementsSection.appendChild(paragraph);
-    } else if(enemyPetHearts <= 0){
+        messagesSection.appendChild(paragraph);
+        resetSection.style.display = 'block';
+        movementsSection.style.display = 'none';
+    } else if (enemyPetHearts <= 0) {
         paragraph.innerHTML = petName.textContent + ' wins';
-        movementsSection.appendChild(paragraph);
+        messagesSection.appendChild(paragraph);
+        resetSection.style.display = 'block';
+        movementsSection.style.display = 'none';
     }
+    updateButtons();
+}
+
+function resetGame() {
+    location.reload();
 }
