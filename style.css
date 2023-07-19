@@ -4,9 +4,22 @@
     padding: 0;
 }
 
-.title{
+.header__title{
     width: 238px;
     height: 100px;
     background-color: teal;
     color: white;
+    text-align: center;
+}
+
+.header{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.select-pet{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
