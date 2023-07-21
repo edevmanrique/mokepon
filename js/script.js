@@ -3,7 +3,9 @@ const petButton = document.getElementById('select-pet__select');
 petButton.addEventListener('click', selectPlayerPet);
 
 //Setting HTML sections
+const startSection = document.getElementById('start');
 const petsSection = document.getElementById('select-pet');
+petsSection.style.display = 'none';
 const movementsSection = document.getElementById('select-attack');
 movementsSection.style.display = 'none';
 const messagesSection = document.getElementById('messages');
@@ -32,6 +34,10 @@ let protectionMovement;
 let enemyAttackMovement;
 let enemyRegenerationMovement;
 let enemyProtectionMovement;
+
+//Setting start button
+const startButton = document.getElementById('start__button')
+startButton.addEventListener('click', start)
 
 //Setting movements buttons
 const attackMovementButton = document.getElementById('select-attack__fire')
@@ -67,6 +73,11 @@ const enemyPetLife = document.getElementById('select-attack__enemy-pet-hearts')
 //Variables to know when a pet uses protection movement
 let petProtection = false;
 let enemyPetProtection = false;
+
+function start(){
+    startSection.style.display = 'none'
+    petsSection.style.display = 'block';
+}
 
 //Getting a random number between min and max parameters
 function getRandom(min, max) {
