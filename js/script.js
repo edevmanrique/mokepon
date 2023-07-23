@@ -76,7 +76,7 @@ let enemyPetProtection = false;
 
 function start(){
     startSection.style.display = 'none'
-    petsSection.style.display = 'block';
+    petsSection.style.display = 'flex';
 }
 
 //Getting a random number between min and max parameters

@@ -8,22 +8,29 @@
     src: url("./fonts/pixel-2.ttf");
 }
 
+@font-face {
+    font-family: "raleway";
+    src: url("./fonts/raleway.ttf");
+}
+
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
-body{
+body {
     background-image: url('./img/fondo-full-hd.png');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 
-.start{
+.start {
     display: flex;
     justify-content: center;
 }
 
-.start button{
+.start button {
     border: none;
     background-color: rgba(14, 15, 17, 0);
     color: rgb(255, 48, 48);
@@ -31,7 +38,7 @@ body{
     font-family: "pixel";
 }
 
-.start button:hover{
+.start button:hover {
     cursor: pointer;
     color: rgb(255, 230, 0);
 }
@@ -40,15 +47,15 @@ body{
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 50px;
+    margin-bottom: 25px;
 }
 
-.header__title{
+.header__title {
     display: flex;
     justify-content: center;
 }
 
-.header__title img{
+.header__title img {
     width: 40%;
 }
 
@@ -56,4 +63,92 @@ body{
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+.cards {
+    display: flex;
+    flex-direction: column;
+}
+
+.cards input{
+    visibility: hidden;
+}
+
+.cards__mokepon-card {
+    margin-top: 10px;
+    padding: 20px 10px 20px 20px;
+    width: 350px;
+    height: 100px;
+    font-family: "raleway";
+    font-size: 35px;
+    border-radius: 5px;
+    background-color: white;
+    color: rgb(0, 0, 0);
+    box-shadow: 2px 3px rgba(0, 0, 0, 0.169);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    overflow: hidden;
+}
+
+.cards__mokepon-card img {
+    width: 110px;
+    height: 100px;
+    margin-top: 40px;
+}
+
+.cards__mokepon-card:hover {
+    cursor: pointer;
+}
+
+.cards__mokepon-card:hover{
+    background-color: rgb(254, 254, 192);
+}
+
+.burntrack p {
+    background: linear-gradient(to bottom, #fc1212, #ff8800);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.glitch p {
+    background: linear-gradient(to bottom, #001c82, #eeff00);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.mortus p {
+    background: linear-gradient(to bottom, #b133ff, #f16eff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.inferstorm p {
+    background: linear-gradient(to top, #ff4d00, #fbff00);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.blazen p {
+    background: linear-gradient(to top, #ff4d00, #750000);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.thunderneg p {
+    background: linear-gradient(to top, #fff700, #756700);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.select-pet__select {
+    width: 500px;
+    padding: 20px;
+    margin: 30px 0px 50px 0px;
 }

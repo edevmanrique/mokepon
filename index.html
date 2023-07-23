@@ -11,33 +11,53 @@
 
 <body>
     <header class="header">
-        <h1 class="header__title"><img src="./img/logo.png" alt=""></h1>
+        <h1 class="header__title"><img src="./img/logo.png" alt="logo and title"></h1>
     </header>
     <section class="start" id="start">
         <button id="start__button">Start the adventure</button>
     </section>
     <section class="select-pet" id="select-pet">
-        <h2>Select a pet</h2>
+        <img class="select-pet__select" src="./img/select-pet.png" alt="select a mokepon">
 
-        <label for="burntrack">Burntrack 🔥</label>
-        <input type="radio" name="pets" id="burntrack" value="Burntrack 🔥" checked>
+        <div class="cards">
+            <label class="cards__mokepon-card burntrack" for="burntrack">
+                <p>Burntrack</p>
+                <img class="cards__mokepon-card_image" src="./img/burntrack.png" alt="">
+            </label>
+            <input type="radio" name="pets" id="burntrack" value="Burntrack 🔥" checked>
 
-        <label for="glitch">Glitch ⚡</label>
-        <input type="radio" name="pets" id="glitch" value="Glitch ⚡">
+            <label class="cards__mokepon-card glitch" for="glitch">
+                <p>Glitch</p>
+                <img class="cards__mokepon-card_image" src="./img/glitch.png" alt="">
+            </label>
+            <input type="radio" name="pets" id="glitch" value="Glitch ⚡">
 
-        <label for="mortus">Mortus 🖤</label>
-        <input type="radio" name="pets" id="mortus" value="Mortus 🖤">
+            <label class="cards__mokepon-card mortus" for="mortus">
+                <p>Mortus</p>
+                <img class="cards__mokepon-card_image" src="./img/mortus.png" alt="">
+            </label>
+            <input type="radio" name="pets" id="mortus" value="Mortus 🖤">
 
-        <label for="inferstorm">Inferstorm 🔥⚡</label>
-        <input type="radio" name="pets" id="inferstorm" value="Inferstorm 🔥⚡">
+            <label class="cards__mokepon-card inferstorm" for="inferstorm">
+                <p>Inferstorm</p>
+                <img class="cards__mokepon-card_image" src="./img/inferstorm.png" alt="">
+            </label>
+            <input type="radio" name="pets" id="inferstorm" value="Inferstorm 🔥⚡">
 
-        <label for="blazen">Blazen 🔥🖤</label>
-        <input type="radio" name="pets" id="blazen" value="Blazen 🔥🖤">
+            <label class="cards__mokepon-card blazen" for="blazen">
+                <p>Blazen</p>
+                <img class="cards__mokepon-card_image" src="./img/blazen.png" alt="">
+            </label>
+            <input type="radio" name="pets" id="blazen" value="Blazen 🔥🖤">
 
-        <label for="thunderneg">Thunderneg ⚡🖤</label>
-        <input type="radio" name="pets" id="thunderneg" value="Thunderneg ⚡🖤">
+            <label class="cards__mokepon-card thunderneg" for="thunderneg">
+                <p>Thunderneg</p>
+                <img class="cards__mokepon-card_image" src="./img/thunderneg.png" alt="">
+            </label>
+            <input type="radio" name="pets" id="thunderneg" value="Thunderneg ⚡🖤">
+        </div>
 
-        <button class="select-pet__select" id="select-pet__select">Select</button>
+        <button class="select-pet__select" id="select-pet__select">Let's fight</button>
     </section>
     <section class="select-attack" id="select-attack">
         <h1 class="title">Mokepon 🔥🖤</h1>
