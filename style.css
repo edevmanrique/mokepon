@@ -65,12 +65,17 @@ body {
     align-items: center;
 }
 
-.cards {
-    display: flex;
-    flex-direction: column;
+.select-pet__select {
+    width: 500px;
 }
 
-.cards input{
+.cards {
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+}
+
+.cards input {
     visibility: hidden;
 }
 
@@ -92,16 +97,21 @@ body {
 }
 
 .cards__mokepon-card img {
+    margin-top: 40px;
     width: 110px;
     height: 100px;
-    margin-top: 40px;
 }
 
 .cards__mokepon-card:hover {
+    background-color: rgb(254, 254, 192);
     cursor: pointer;
 }
 
-.cards__mokepon-card:hover{
+.cards__mokepon-card:active {
+    background-color: rgb(255, 255, 71);
+}
+
+input[type="radio"]:checked+.cards__mokepon-card {
     background-color: rgb(254, 254, 192);
 }
 
@@ -147,8 +157,129 @@ body {
     color: transparent;
 }
 
-.select-pet__select {
-    width: 500px;
-    padding: 20px;
-    margin: 30px 0px 50px 0px;
+.cards__mokepon-card_info {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
+
+.cards__mokepon-card_element {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    height: 50%;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.cards__mokepon-card_info>.cards__mokepon-card_element>.cards__mokepon-card_element-description {
+    font-size: 16px;
+    color: black;
+}
+
+.cards__mokepon-card_info img {
+    width: 15px;
+    height: 17px;
+    margin-bottom: 2.2px;
+}
+
+.cards__mokepon-card_element {
+    display: flex;
+    flex-direction: row;
+}
+
+.select-pet__fight {
+    border-radius: 10px;
+    padding: 10px 120px;
+    margin: 40px 0px;
+    border: none;
+    font-family: "raleway";
+    color: black;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 10px;
+    height: 5vh;
+    box-shadow: 2px 2px 10px rgb(255, 163, 163);
+    overflow: hidden;
+    position: relative;
+}
+
+.select-pet__fight__slogan{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.select-pet__fight:hover{
+    cursor: pointer;
+}
+
+.select-pet__fight img{
+    width: 35px;
+    position: absolute;
+}
+
+.select-pet__fight span{
+    position: relative;
+    top: -41.5px;
+    font-size: 15px;
+}
+
+.select-pet__fight:hover span{
+    animation-name: up;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
+
+.select-pet__fight:hover > img{
+    animation-name: down;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
+
+.select-attack{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0px 300px;
+}
+
+.select-attack__images{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap:250px;
+}
+
+.select-attack__images img{
+    width: 350px;
+}
+
+.select-attack__images img:first-child{
+    transform: scaleX(-1);
+}
+
+@keyframes up{
+    0% {
+        top: -41.5px;
+    }
+    100% {
+        top: 0px;
+        opacity: 1;
+    }
+}
+
+@keyframes down{
+    0% {
+        top: 0px;
+    }
+    100% {
+        top: 45px;
+        opacity: 0;
+    }
+}
+

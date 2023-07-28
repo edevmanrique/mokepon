@@ -1,5 +1,5 @@
 //It starts the game after DOM is generated correctly
-const petButton = document.getElementById('select-pet__select');
+const petButton = document.getElementById('select-pet__fight');
 petButton.addEventListener('click', selectPlayerPet);
 
 //Setting HTML sections
@@ -13,9 +13,12 @@ messagesSection.style.display = 'none';
 const resetSection = document.getElementById('reset');
 resetSection.style.display = 'none';
 
-//Setting pets name
+//Setting pets names
 const petName = document.getElementById('select-attack__my-pet');
 const enemyPetName = document.getElementById('select-attack__enemy-pet');
+
+//Setting a constant to get the value of the pets
+const petNames = document.querySelectorAll('input[type="radio"]');
 
 //Setting pets buttons to choose
 const firePet = document.getElementById('burntrack')
@@ -38,6 +41,16 @@ let enemyProtectionMovement;
 //Setting start button
 const startButton = document.getElementById('start__button')
 startButton.addEventListener('click', start)
+
+//Setting variables to get mokepons image
+let playerPetImage;
+let enemyPetImage;
+
+//Setting variables to get mokepons image
+const imgPlayerPet = document.getElementById('select-attack__images_player-pet');
+const imgPlayerPlatform = document.getElementById('select-attack__images_player-platform');
+const imgEnemyPet = document.getElementById('select-attack__images_enemy-pet');
+const imgEnemyPlatform = 'select-attack__images_enemy-platform';
 
 //Setting movements buttons
 const attackMovementButton = document.getElementById('select-attack__fire')
@@ -74,7 +87,7 @@ const enemyPetLife = document.getElementById('select-attack__enemy-pet-hearts')
 let petProtection = false;
 let enemyPetProtection = false;
 
-function start(){
+function start() {
     startSection.style.display = 'none'
     petsSection.style.display = 'flex';
 }
@@ -178,6 +191,12 @@ function getRandomEnemyPet() {
             setName(petEnemy, 2);
             break;
     }
+    getImages();
+}
+
+function getImages() {
+    imgPlayerPet.setAttribute('src', './img/' + petName.innerHTML.toLowerCase() + '.png')
+    imgEnemyPet.setAttribute('src', './img/' + enemyPetName.innerHTML.toLowerCase() + '.png')
 }
 
 //We set the value of movements, n is to know if It's player or computer
