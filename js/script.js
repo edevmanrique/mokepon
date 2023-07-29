@@ -17,9 +17,6 @@ resetSection.style.display = 'none';
 const petName = document.getElementById('select-attack__my-pet');
 const enemyPetName = document.getElementById('select-attack__enemy-pet');
 
-//Setting a constant to get the value of the pets
-const petNames = document.querySelectorAll('input[type="radio"]');
-
 //Setting pets buttons to choose
 const firePet = document.getElementById('burntrack')
 const electricPet = document.getElementById('glitch')
@@ -82,6 +79,10 @@ const maximumHearts = petHearts;
 //We get the span with the hearts to update them after a movement
 const petLife = document.getElementById('select-attack__my-pet-hearts')
 const enemyPetLife = document.getElementById('select-attack__enemy-pet-hearts')
+
+//Const
+const spanHearts = document.getElementById('select-attack__my-pet-container')
+
 
 //Variables to know when a pet uses protection movement
 let petProtection = false;
@@ -322,6 +323,12 @@ function createMovementes(n, attack) {
 
 //It works to update the pets' hearts
 function updateHearts(n) {
+    if(petHearts < maximumHearts){
+        spanHearts.style.marginBottom = '20px'
+    }
+    if(petHearts == 6){
+        spanHearts.style.marginBottom = '0px'
+    }
     let hearts = '';
     //Limit the quantity of hearts to be maximum 3
     if (petHearts > maximumHearts) {
@@ -336,7 +343,7 @@ function updateHearts(n) {
                 hearts += '💛';
                 break;
             }
-            hearts += '❤️';
+            enemyPetLife.textContent = enemyPetHearts;
         }
         petLife.textContent = hearts;
     } else if (n == 2) {
@@ -345,15 +352,15 @@ function updateHearts(n) {
                 hearts += '💛';
                 break;
             }
-            hearts += '❤️';
+            petLife.textContent = petHearts;
         }
         enemyPetLife.textContent = hearts;
     } else if (n == 3) {
         for (i = 0; i < maximumHearts; i++) {
             hearts += '❤️';
         }
-        petLife.textContent = hearts;
-        enemyPetLife.textContent = hearts;
+        petLife.textContent = petHearts;
+        enemyPetLife.textContent = enemyPetHearts;
     }
 }
 

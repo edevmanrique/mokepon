@@ -244,7 +244,50 @@ input[type="radio"]:checked+.cards__mokepon-card {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 0px 300px;
+    margin: 0px 200px;
+}
+
+.select-attack__mokepon-card_info{
+    margin-top: 10px;
+    padding: 20px 10px 20px 20px;
+    width: 350px;
+    height: 100px;
+    font-family: "raleway";
+    font-size: 35px;
+    border-radius: 5px;
+    background-color: white;
+    color: rgb(0, 0, 0);
+    box-shadow: 2px 3px rgba(0, 0, 0, 0.169);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    overflow: hidden;
+}
+
+.select-attack__mokepon-card{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 250px;
+}
+
+.select-attack__pet-name img{
+    width: 30px;
+}
+
+.select-attack__pet-life{
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.select-attack__my-pet-hearts{
+    font-size: 70px;
+}
+
+.select-attack__heart{
+    width: 70px;
+    margin-left: 3px;
 }
 
 .select-attack__images{
@@ -261,6 +304,14 @@ input[type="radio"]:checked+.cards__mokepon-card {
 
 .select-attack__images img:first-child{
     transform: scaleX(-1);
+}
+
+.select-attack__buttons{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 50px 50px;
 }
 
 @keyframes up{
