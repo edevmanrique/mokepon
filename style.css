@@ -255,7 +255,7 @@ input[type="radio"]:checked+.cards__mokepon-card {
     font-family: "raleway";
     font-size: 35px;
     border-radius: 5px;
-    background-color: white;
+    background-color: rgb(255, 255, 255);
     color: rgb(0, 0, 0);
     box-shadow: 2px 3px rgba(0, 0, 0, 0.169);
     display: flex;
@@ -269,6 +269,10 @@ input[type="radio"]:checked+.cards__mokepon-card {
     align-items: center;
     justify-content: center;
     gap: 250px;
+}
+
+.select-attack__mokepon-card_element img:nth-child(3){
+    display: none;
 }
 
 .select-attack__pet-name img{
@@ -312,6 +316,11 @@ input[type="radio"]:checked+.cards__mokepon-card {
     justify-content: center;
     align-items: center;
     margin: 50px 50px;
+}
+
+.select-attack__buttons img{
+    width: 500px;
+    margin-bottom: 50px;
 }
 
 @keyframes up{

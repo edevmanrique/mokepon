@@ -110,27 +110,28 @@
     </section>
     <section class="select-attack" id="select-attack">
         <div class="select-attack__mokepon-card">
-            <div class="select-attack__mokepon-card_info">
+            <div class="select-attack__mokepon-card_info" id="select-attack__my-mokepon-card_info">
                 <div class="select-attack__pet-name">
                     <p><span id="select-attack__my-pet"></span></p>
                     <div class="select-attack__mokepon-card_element">
                         <img src="./img/fire.png" alt="">
                         <img src="./img/dark.png" alt="">
-                        <img src="./img/shield.png" alt="">
+                        <img id="select-attack__pet-shield" src="./img/shield.png" alt="">
                     </div>
                 </div>
                 <div class="select-attack__pet-life">
                     <img class="select-attack__heart" src="./img/heart.png" alt="">
-                    <p id="select-attack__my-pet-container"><span id="select-attack__my-pet-hearts" class="select-attack__my-pet-hearts"></span></p>
+                    <p id="select-attack__my-pet-container"><span id="select-attack__my-pet-hearts"
+                            class="select-attack__my-pet-hearts"></span></p>
                 </div>
             </div>
-            <div class="select-attack__mokepon-card_info">
+            <div class="select-attack__mokepon-card_info" id="select-attack__enemy-mokepon-card_info">
                 <div class="select-attack__pet-name">
                     <p><span id="select-attack__enemy-pet"></p>
                     <div class="select-attack__mokepon-card_element">
                         <img src="./img/fire.png" alt="">
                         <img src="./img/dark.png" alt="">
-                        <img src="./img/shield.png" alt="">
+                        <img id="select-attack__enemy-pet-shield" src="./img/shield.png" alt="">
                     </div>
                 </div>
                 <div class="select-attack__pet-life">
@@ -144,12 +145,12 @@
             <img id="select-attack__images_enemy-pet" alt="">
         </div>
         <div class="select-attack__buttons">
-            <h2>Select an attack</h2>
-        <p>
-            <button class="select-attack__fire" id="select-attack__fire"></button>
-            <button class="select-attack__electric" id="select-attack__electric"></button>
-            <button class="select-attack__darkness" id="select-attack__darkness"></button>
-        </p>
+            <img src="./img/select-attack.png" alt="">
+            <p>
+                <button class="select-attack__fire" id="select-attack__fire"></button>
+                <button class="select-attack__electric" id="select-attack__electric"></button>
+                <button class="select-attack__darkness" id="select-attack__darkness"></button>
+            </p>
         </div>
     </section>
     <section class="messages" id="messages">

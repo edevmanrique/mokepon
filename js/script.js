@@ -83,6 +83,13 @@ const enemyPetLife = document.getElementById('select-attack__enemy-pet-hearts')
 //Const
 const spanHearts = document.getElementById('select-attack__my-pet-container')
 
+//Blocks to guard movement
+const playerGuard = document.getElementById('select-attack__my-mokepon-card_info')
+const enemyGuard = document.getElementById('select-attack__enemy-mokepon-card_info')
+
+//Shield images
+const playerShield = document.getElementById('select-attack__pet-shield')
+const enemyShield = document.getElementById('select-attack__enemy-pet-shield')
 
 //Variables to know when a pet uses protection movement
 let petProtection = false;
@@ -323,14 +330,16 @@ function createMovementes(n, attack) {
 
 //It works to update the pets' hearts
 function updateHearts(n) {
-    if(petHearts < maximumHearts){
+    if (petHearts < maximumHearts) {
         spanHearts.style.marginBottom = '20px'
     }
-    if(petHearts == 6){
+    if (petHearts == 6) {
         spanHearts.style.marginBottom = '0px'
     }
+
     let hearts = '';
-    //Limit the quantity of hearts to be maximum 3
+
+    //Limit the quantity of hearts when they use healing movement
     if (petHearts > maximumHearts) {
         petHearts = maximumHearts;
     } else if (enemyPetHearts > maximumHearts) {
@@ -338,23 +347,25 @@ function updateHearts(n) {
     }
 
     if (n == 1) {
-        for (i = 0; i < petHearts; i++) {
-            if (petProtection && (i == petHearts - 1)) {
-                hearts += '💛';
-                break;
-            }
+        if (petProtection) {
+            playerGuard.style.backgroundColor = 'rgb(250, 244, 120)'
+            playerShield.style.display = 'inline'
+        } else {
+            playerShield.style.display = 'none'
+            playerGuard.style.backgroundColor = '#FFF'
             enemyPetLife.textContent = enemyPetHearts;
-        }
-        petLife.textContent = hearts;
-    } else if (n == 2) {
-        for (i = 0; i < enemyPetHearts; i++) {
-            if (enemyPetProtection && (i == enemyPetHearts - 1)) {
-                hearts += '💛';
-                break;
-            }
             petLife.textContent = petHearts;
         }
-        enemyPetLife.textContent = hearts;
+    } else if (n == 2) {
+        if (enemyPetProtection) {
+            enemyGuard.style.backgroundColor = 'rgb(250, 244, 120)'
+            enemyShield.style.display = 'inline'
+        } else {
+            enemyShield.style.display = 'none'
+            enemyGuard.style.backgroundColor = '#FFF'
+            petLife.textContent = petHearts;
+            enemyPetLife.textContent = enemyPetHearts;
+        }
     } else if (n == 3) {
         for (i = 0; i < maximumHearts; i++) {
             hearts += '❤️';
