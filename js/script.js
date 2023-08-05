@@ -52,9 +52,13 @@ const imgEnemyPlatform = 'select-attack__images_enemy-platform';
 //Setting movements buttons
 const attackMovementButton = document.getElementById('select-attack__fire')
 attackMovementButton.addEventListener('click', fireMovement)
+
 const regenerationMovementButton = document.getElementById('select-attack__electric')
 regenerationMovementButton.disabled = true;
+regenerationMovementButton.style.backgroundColor = 'rgba(255, 255, 255, 0.727)';
+regenerationMovementButton.style.color = 'rgba(0, 0, 0, 0.575)'
 regenerationMovementButton.addEventListener('click', electricMovement)
+
 const protectionMovementButton = document.getElementById('select-attack__darkness')
 protectionMovementButton.addEventListener('click', darkMovement)
 
@@ -91,6 +95,10 @@ const enemyGuard = document.getElementById('select-attack__enemy-mokepon-card_in
 const playerShield = document.getElementById('select-attack__pet-shield')
 const enemyShield = document.getElementById('select-attack__enemy-pet-shield')
 
+//Textareas to display battle messages/history
+const playerMessages = document.getElementById('messages__playerPet')
+const enemyMessages = document.getElementById('messages__enemyPet')
+
 //Variables to know when a pet uses protection movement
 let petProtection = false;
 let enemyPetProtection = false;
@@ -118,7 +126,9 @@ function getTwoRandom(first, second) {
 function selectPlayerPet() {
     petsSection.style.display = 'none';
     movementsSection.style.display = 'block';
-    messagesSection.style.display = 'block';
+    messagesSection.style.display = 'flex';
+    playerMessages.style.display = 'none'
+    enemyMessages.style.display = 'none'
     updateHearts(3);
     if (firePet.checked) {
         setMovement('Magma Storm', 'Overheat', 'Sunny Day', 1);
@@ -233,7 +243,9 @@ function setName(name, n) {
 
 //These are the functions to define what happens with the player's movements
 function fireMovement() {
-    createMovementes(1, attackMovementButton.value)
+    playerMessages.style.display = 'flex'
+    enemyMessages.style.display = 'flex'
+    createMovementes(1, 1, attackMovementButton.value)
     if (enemyPetProtection) {
         enemyPetProtection = false;
     } else {
@@ -248,21 +260,21 @@ function fireMovement() {
 }
 
 function electricMovement() {
-    createMovementes(1, regenerationMovementButton.value)
+    createMovementes(1, 2, regenerationMovementButton.value)
     petHearts++;
     updateHearts(1);
     setPetEnemyAttack();
 }
 
 function darkMovement() {
-    createMovementes(1, protectionMovementButton.value)
+    createMovementes(1, 3, protectionMovementButton.value)
+    playerMessages.style.display = 'flex'
+    enemyMessages.style.display = 'flex'
     petProtection = true;
+    protectionMovementButton.style.backgroundColor = 'rgba(255, 255, 255, 0.727)';
+    protectionMovementButton.style.color = 'rgba(0, 0, 0, 0.575)'
     updateHearts(1);
-    if (result()) {
-        result();
-    } else {
-        setPetEnemyAttack();
-    }
+    setPetEnemyAttack();
 }
 
 //These are the functions to define enemy's movements
@@ -280,8 +292,14 @@ function setPetEnemyAttack() {
     if (enemyAttack == 1) {
         if (petProtection) {
             petProtection = false;
+            hoverButton(1, protectionMovementButton, '#ffd230', '#554200')
+            hoverButton(2, protectionMovementButton, '#FFF', 'black')
+            protectionMovementButton.style.backgroundColor = 'rgba(255, 255, 255)';
+            protectionMovementButton.style.color = 'rgba(0, 0, 0)'
         } else {
             petHearts--;
+            hoverButton(1, regenerationMovementButton, '#62ff4a', 'rgb(0, 92, 3)')
+            hoverButton(2, regenerationMovementButton, '#FFF', 'black')
         }
         enemyFireMovement();
     } else if (enemyAttack == 2) {
@@ -293,7 +311,7 @@ function setPetEnemyAttack() {
 }
 
 function enemyFireMovement() {
-    createMovementes(2, enemyAttackMovement)
+    createMovementes(2, 1, enemyAttackMovement)
     updateButtons()
     updateHearts(1)
     if (petHearts <= 0) {
@@ -302,13 +320,13 @@ function enemyFireMovement() {
 }
 
 function enemyElectricMovement() {
-    createMovementes(2, enemyRegenerationMovement)
+    createMovementes(2, 2, enemyRegenerationMovement)
     updateButtons()
     updateHearts(2);
 }
 
 function enemyDarkMovement() {
-    createMovementes(2, enemyProtectionMovement)
+    createMovementes(2, 3, enemyProtectionMovement)
     updateButtons()
     enemyPetProtection = true;
     updateHearts(2);
@@ -317,14 +335,23 @@ function enemyDarkMovement() {
 /*It works to generate p tags with the history of attacks in the battle
  *n parameter is to know if it's the player or an enemy
 */
-function createMovementes(n, attack) {
-    let paragraph = document.createElement('p');
+function createMovementes(n, type, movement) {
+    let action;
+    let emoji;
+    if (type == 1) {
+        action = 'attacks';
+        emoji = '⚔️'
+    } else if (type == 2) {
+        action = 'heals';
+        emoji = '❤️‍🩹'
+    } else if (type == 3) {
+        action = 'defends';
+        emoji = '🛡️'
+    }
     if (n == 1) {
-        paragraph.innerHTML = petName.textContent + ' attacks with ' + attack;
-        messagesSection.appendChild(paragraph);
+        playerMessages.textContent += petName.textContent + ' ' + action + ' with ' + movement + emoji + '\n\n';
     } else {
-        paragraph.innerHTML = enemyPetName.textContent + ' attacks with ' + attack;
-        messagesSection.appendChild(paragraph);
+        enemyMessages.textContent += enemyPetName.textContent + ' ' + action + ' with ' + movement + emoji + '\n\n';
     }
 }
 
@@ -335,15 +362,6 @@ function updateHearts(n) {
     }
     if (petHearts == 6) {
         spanHearts.style.marginBottom = '0px'
-    }
-
-    let hearts = '';
-
-    //Limit the quantity of hearts when they use healing movement
-    if (petHearts > maximumHearts) {
-        petHearts = maximumHearts;
-    } else if (enemyPetHearts > maximumHearts) {
-        enemyPetHearts = maximumHearts;
     }
 
     if (n == 1) {
@@ -367,9 +385,6 @@ function updateHearts(n) {
             enemyPetLife.textContent = enemyPetHearts;
         }
     } else if (n == 3) {
-        for (i = 0; i < maximumHearts; i++) {
-            hearts += '❤️';
-        }
         petLife.textContent = petHearts;
         enemyPetLife.textContent = enemyPetHearts;
     }
@@ -379,37 +394,70 @@ function updateButtons() {
     if (petHearts <= 0 || enemyPetHearts <= 0) {
         attackMovementButton.disabled = true;
         regenerationMovementButton.disabled = true;
+        regenerationMovementButton.style.backgroundColor = 'rgba(255, 255, 255, 0.727)';
+        regenerationMovementButton.style.color = 'rgba(0, 0, 0, 0.575)'
         protectionMovementButton.disabled = true;
     } else {
         if (petHearts == maximumHearts && petProtection) {
             regenerationMovementButton.disabled = true;
             protectionMovementButton.disabled = true;
+            regenerationMovementButton.style.backgroundColor = 'rgba(255, 255, 255, 0.727)';
+            regenerationMovementButton.style.color = 'rgba(0, 0, 0, 0.575)'
         } else if (petHearts == maximumHearts && !petProtection) {
             regenerationMovementButton.disabled = true;
             protectionMovementButton.disabled = false;
+            regenerationMovementButton.style.backgroundColor = 'rgba(255, 255, 255, 0.727)';
+            regenerationMovementButton.style.color = 'rgba(0, 0, 0, 0.575)'
         } else if (petProtection) {
             regenerationMovementButton.disabled = false;
+            regenerationMovementButton.style.backgroundColor = 'rgba(255, 255, 255)';
+            regenerationMovementButton.style.color = 'rgba(0, 0, 0)'
             protectionMovementButton.disabled = true;
         } else {
             regenerationMovementButton.disabled = false;
+            regenerationMovementButton.style.backgroundColor = 'rgba(255, 255, 255)';
+            regenerationMovementButton.style.color = 'rgba(0, 0, 0)'
             protectionMovementButton.disabled = false;
         }
     }
 }
 
+function hoverButton(n, btn, background, color){
+    if(n == 1){
+        btn.addEventListener('mouseover', function () {
+            this.style.backgroundColor = background;
+            this.style.color = color;
+        });
+    } else if(n == 2){
+        btn.addEventListener('mouseout', function () {
+            this.style.backgroundColor = background;
+            this.style.color = color;
+        });
+    }
+}
+
 function result() {
     let paragraph = document.createElement('p');
+    let petImage = document.createElement('img');
+    petImage.style.width = '285px';
+    let textImage = document.createElement('img');
+    textImage.style.width = '200px';
     if (petHearts <= 0) {
         paragraph.innerHTML = enemyPetName.textContent + ' wins';
         messagesSection.appendChild(paragraph);
-        resetSection.style.display = 'block';
-        movementsSection.style.display = 'none';
     } else if (enemyPetHearts <= 0) {
-        paragraph.innerHTML = petName.textContent + ' wins';
-        messagesSection.appendChild(paragraph);
-        resetSection.style.display = 'block';
-        movementsSection.style.display = 'none';
+        petImage.setAttribute('src', './img/' + petName.innerHTML.toLowerCase() + '.png')
+        messagesSection.style.display = 'flex'
+        messagesSection.style.flexDirection = 'column'
+        messagesSection.style.gap = '20px'
+        messagesSection.appendChild(textImage);
+        messagesSection.appendChild(petImage);
     }
+    textImage.setAttribute('src', './img/winner.png')
+    resetSection.style.display = 'flex';
+    movementsSection.style.display = 'none';
+    playerMessages.style.display = 'none'
+    enemyMessages.style.display = 'none'
     updateButtons();
 }
 

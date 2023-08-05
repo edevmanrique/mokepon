@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mokepon: Fire and Darkness</title>
     <link rel="stylesheet" href="./style.css">
-    <script src="./js/script.js" defer></script>
 </head>
 
 <body>
@@ -145,19 +144,34 @@
             <img id="select-attack__images_enemy-pet" alt="">
         </div>
         <div class="select-attack__buttons">
-            <img src="./img/select-attack.png" alt="">
-            <p>
-                <button class="select-attack__fire" id="select-attack__fire"></button>
-                <button class="select-attack__electric" id="select-attack__electric"></button>
-                <button class="select-attack__darkness" id="select-attack__darkness"></button>
-            </p>
+            <img class="select-attack__buttons_subtitle" src="./img/select-attack.png" alt="">
+            <div class="select-attack__buttons_images">
+                <div class="select-attack__buttons_img">
+                    <img src="./img/attack.png" alt="">
+                    <button class="select-attack__fire" id="select-attack__fire"></button>
+                </div>
+                <div class="select-attack__buttons_img">
+                    <img src="./img/regeneration.png" alt="">
+                    <button class="select-attack__electric" id="select-attack__electric"></button>
+                </div>
+                <div class="select-attack__buttons_img">
+                    <img src="./img/defend.png" alt="">
+                    <button class="select-attack__darkness" id="select-attack__darkness"></button>
+                </div>
+            </div>
         </div>
     </section>
     <section class="messages" id="messages">
+        <textarea id="messages__playerPet" disabled></textarea>
+        <textarea id="messages__enemyPet" disabled></textarea>
     </section>
     <section class="reset" id="reset">
         <button class="reset__button" id="reset__button">Reset</button>
     </section>
+    <footer>
+        <p>Copyright © 2023 All rights reserved | Design by Edison Manrique</p>
+    </footer>
+    <script src="./js/script.js"></script>
 </body>
 
 </html>

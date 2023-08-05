@@ -23,6 +23,7 @@ body {
     background-image: url('./img/fondo-full-hd.png');
     background-repeat: no-repeat;
     background-attachment: fixed;
+    height: 100vh;
 }
 
 .start {
@@ -191,7 +192,7 @@ input[type="radio"]:checked+.cards__mokepon-card {
 .select-pet__fight {
     border-radius: 10px;
     padding: 10px 120px;
-    margin: 40px 0px;
+    margin: 40px 0px 60px 0px;
     border: none;
     font-family: "raleway";
     color: black;
@@ -315,12 +316,177 @@ input[type="radio"]:checked+.cards__mokepon-card {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin: 50px 50px;
 }
 
-.select-attack__buttons img{
-    width: 500px;
-    margin-bottom: 50px;
+.select-attack__buttons_subtitle {
+    width: 600px;
+    margin-bottom: 30px;
+}
+
+.select-attack__buttons_images{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 80px;
+    margin-bottom: 100px;
+}
+
+.select-attack__buttons_img{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.select-attack__buttons_img img{
+    width: 110px;
+}
+
+.select-attack__buttons button{
+    width: 280px;
+    padding: 10px 0px;
+    border: none;
+    border-radius: 5px;
+    font-family: "raleway";
+    background-color: white;
+    color: black;
+    box-shadow: -1px 3px 3px black;
+}
+
+.select-attack__buttons button:hover{
+    cursor: pointer;
+}
+
+.select-attack__fire:hover{
+    background-color: rgb(255, 58, 58);
+    color: rgb(255, 182, 182);
+}
+
+.select-attack__electric:hover{
+    background-color: #62ff4a;
+    color: rgb(0, 92, 3);
+}
+
+.select-attack__darkness:hover{
+    background-color: #ffd230;
+    color: #554200;
+}
+
+.messages{
+    justify-content: center;
+    align-items: center;
+    gap: 220px;
+}
+
+.messages textarea{
+    min-width: 400px;
+    min-height: 400px;
+    margin-bottom: 100px;
+    border: none;
+    background-color: rgb(40, 40, 40);
+    border-radius: 10px;
+    box-shadow: -4px 4px 2px black;
+    outline: none;
+    resize: none;
+    padding: 20px;
+    color: white;
+    font-family: 'raleway';
+}
+
+.reset{
+    justify-content: center;
+}
+
+.reset__button{
+    width: 300px;
+    margin: 70px 0px;
+    padding: 10px 0px;
+    background-color: white;
+    border: none;
+    box-shadow: -2px 2px 5px black;
+    border-radius: 5px;
+    font-family: 'raleway';
+    font-size: 17px;
+}
+
+.reset__button:hover{
+    cursor: pointer;
+    background-color: rgb(254, 254, 192);
+}
+
+.reset__button:active{
+    background-color: rgb(254, 254, 75);
+}
+
+footer{
+    background-color: #ffc600;
+    padding: 10px 0px;
+    width: 100%;
+    text-align: center;
+    font-family: 'pixel';
+    position: fixed;
+    bottom: 0;
+}
+
+@media(max-width: 415px){
+    .header__title img {
+        width: 80%;
+    }
+
+    .start button{
+        position: absolute;
+        font-size: 30px;
+        top: 50%;
+    }
+
+    .select-pet__select{
+        width: 300px;
+    }
+
+    .cards{
+        flex-direction: column;
+        gap: 0px;
+    }
+
+    .select-attack__mokepon-card{
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .select-attack__images{
+        margin-top: 30px;
+        gap: 50px;
+    }
+
+    .select-attack__images img{
+        width: 150px;
+    }
+
+    .select-attack__buttons_subtitle{
+        width: 380px;
+        margin-top: 20px;
+    }
+
+    .select-attack__buttons_images{
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    .messages{
+        flex-direction: column;
+        gap: 0px;
+    }
+
+    .messages textarea{
+        min-width: 300px;
+        min-height: 100px;
+        margin-bottom: 60px;
+    }
+
+    footer{
+        font-size: 12px;
+    }
 }
 
 @keyframes up{
