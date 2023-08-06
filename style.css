@@ -151,7 +151,7 @@ input[type="radio"]:checked+.cards__mokepon-card {
     color: transparent;
 }
 
-.thunderneg p {
+.thunneg p {
     background: linear-gradient(to top, #fff700, #756700);
     -webkit-background-clip: text;
     background-clip: text;

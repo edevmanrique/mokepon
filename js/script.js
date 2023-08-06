@@ -14,7 +14,7 @@ const resetSection = document.getElementById('reset');
 resetSection.style.display = 'none';
 
 //Setting pets names
-const petName = document.getElementById('select-attack__my-pet');
+const playerPetName = document.getElementById('select-attack__my-pet');
 const enemyPetName = document.getElementById('select-attack__enemy-pet');
 
 //Setting pets buttons to choose
@@ -23,12 +23,12 @@ const electricPet = document.getElementById('glitch')
 const darkPet = document.getElementById('mortus')
 const fireElectricPet = document.getElementById('inferstorm')
 const fireDarkPet = document.getElementById('blazen')
-const electricDarkPet = document.getElementById('thunderneg')
+const electricDarkPet = document.getElementById('thunneg')
 
 //Setting player movements
-let attackMovement;
-let regenerationMovement;
-let protectionMovement;
+let playerAttackMovement;
+let playerRegenerationMovement;
+let playerProtectionMovement;
 
 //Setting enemy movements
 let enemyAttackMovement;
@@ -40,48 +40,36 @@ const startButton = document.getElementById('start__button')
 startButton.addEventListener('click', start)
 
 //Setting variables to get mokepons image
-let playerPetImage;
-let enemyPetImage;
-
-//Setting variables to get mokepons image
 const imgPlayerPet = document.getElementById('select-attack__images_player-pet');
-const imgPlayerPlatform = document.getElementById('select-attack__images_player-platform');
 const imgEnemyPet = document.getElementById('select-attack__images_enemy-pet');
-const imgEnemyPlatform = 'select-attack__images_enemy-platform';
 
 //Setting movements buttons
 const attackMovementButton = document.getElementById('select-attack__fire')
-attackMovementButton.addEventListener('click', fireMovement)
+attackMovementButton.addEventListener('click', playerPetAttackMovement)
 
 const regenerationMovementButton = document.getElementById('select-attack__electric')
 regenerationMovementButton.disabled = true;
 regenerationMovementButton.style.backgroundColor = 'rgba(255, 255, 255, 0.727)';
 regenerationMovementButton.style.color = 'rgba(0, 0, 0, 0.575)'
-regenerationMovementButton.addEventListener('click', electricMovement)
+regenerationMovementButton.addEventListener('click', playerPetHealingMovement)
 
 const protectionMovementButton = document.getElementById('select-attack__darkness')
-protectionMovementButton.addEventListener('click', darkMovement)
+protectionMovementButton.addEventListener('click', playerPetDefendMovement)
 
 //Setting reset button
 const resetButton = document.getElementById('reset__button');
 resetButton.addEventListener('click', resetGame)
 
-//Getting the span in movements section to set name and attack done in the battle
-const petFightingName = document.getElementById('messages__player-pet')
-const petFightingAttack = document.getElementById('messages__player-attack')
-
-const enemyPetFightingName = document.getElementById('messages__enemy-pet')
-const enemyPetFightingAttack = document.getElementById('messages__enemy-attack')
-
 //Setting the pets' hearts
-let petHearts = 8;
-let enemyPetHearts = 8;
+let playerPetHearts;
+let enemyPetHearts;
 
-//We set a limit to know the maximum number of hearts
-const maximumHearts = petHearts;
+//Setting limits
+let maximumPlayerPetHearts;
+let maximumEnemyPetHearts;
 
 //We get the span with the hearts to update them after a movement
-const petLife = document.getElementById('select-attack__my-pet-hearts')
+const playerPetLife = document.getElementById('select-attack__my-pet-hearts')
 const enemyPetLife = document.getElementById('select-attack__enemy-pet-hearts')
 
 //Const
@@ -100,8 +88,30 @@ const playerMessages = document.getElementById('messages__playerPet')
 const enemyMessages = document.getElementById('messages__enemyPet')
 
 //Variables to know when a pet uses protection movement
-let petProtection = false;
-let enemyPetProtection = false;
+let playerPetProtection;
+let enemyPetProtection;
+
+//Class to create Mokepons
+class Mokepon {
+    constructor(name, element, image, life, attack, healing, defend, protection) {
+        this.name = name;
+        this.element = element;
+        this.image = image;
+        this.life = life;
+        this.attack = attack;
+        this.healing = healing;
+        this.defend = defend;
+        this.protection = protection;
+    }
+}
+
+//Creating Mokepons
+let burntrack = new Mokepon('Burntrack', 'Fire', '../img/burntrack.png', 8, 'Magma Storm', 'Overheat', 'Sunny Day', false);
+let glitch = new Mokepon('Glitch', 'Electric', '../img/glitch.png', 5, 'Thunder Punch', 'Overdrive', 'Charge Beam', false);
+let mortus = new Mokepon('Mortus', 'Dark', '../img/mortus.png', 7, 'Dark Pulse', 'Crunch', 'False Surrender', false);
+let inferstorm = new Mokepon('Inferstorm', 'Hybrid', '../img/inferstorm.png', 15, 'Hot Lightning', 'Fast Fireball', 'Magray', false);
+let blazen = new Mokepon('Blazen', 'Hybrid', '../img/blazen.png', 17, 'Dark Light', 'Negative Eruption', 'Mystical Fire', true);
+let thunneg = new Mokepon('Thunneg', 'Hybrid', '../img/thunneg.png', 12, 'Infinite Storm', 'Electro Darkness', 'Last Flash', false);
 
 function start() {
     startSection.style.display = 'none'
@@ -131,33 +141,21 @@ function selectPlayerPet() {
     enemyMessages.style.display = 'none'
     updateHearts(3);
     if (firePet.checked) {
-        setMovement('Magma Storm', 'Overheat', 'Sunny Day', 1);
-        setMovementButtons(attackMovement, regenerationMovement, protectionMovement);
-        setName(firePet.value, 1)
+        preparingPet(1, burntrack);
     } else if (electricPet.checked) {
-        setMovement('Thunder Punch', 'Overdrive', 'Charge Beam', 1);
-        setMovementButtons(attackMovement, regenerationMovement, protectionMovement);
-        setName(electricPet.value, 1)
+        preparingPet(1, glitch);
     } else if (darkPet.checked) {
-        setMovement('Dark Pulse', 'Crunch', 'False Surrender', 1);
-        setMovementButtons(attackMovement, regenerationMovement, protectionMovement);
-        setName(darkPet.value, 1)
+        preparingPet(1, mortus);
     } else if (fireElectricPet.checked) {
-        setMovement('Hot Lightning', 'Fast Fireball', 'Magray', 1);
-        setMovementButtons(attackMovement, regenerationMovement, protectionMovement);
-        setName(fireElectricPet.value, 1)
+        preparingPet(1, inferstorm);
     } else if (fireDarkPet.checked) {
-        setMovement('Dark Light', 'Negative Eruption', 'Mystical Fire', 1);
-        setMovementButtons(attackMovement, regenerationMovement, protectionMovement);
-        setName(fireDarkPet.value, 1)
+        preparingPet(1, blazen);
     } else if (electricDarkPet.checked) {
-        setMovement('Infinite Storm', 'Electro Darkness', 'Last Flash', 1);
-        setMovementButtons(attackMovement, regenerationMovement, protectionMovement);
-        setName(electricDarkPet.value, 1)
+        preparingPet(1, thunneg);
     } else {
         alert('You have to select a pet');
     }
-
+    updateHearts(1);
     getRandomEnemyPet();
 }
 
@@ -175,54 +173,56 @@ function setMovementButtons(attack, regeneration, protection) {
 
 //We get a random pet to fight agains the computer
 function getRandomEnemyPet() {
-    let petNumber = getRandom(1, 6);
-    let petEnemy = ''
-    switch (petNumber) {
+    let n = getRandom(1, 6);
+    switch (n) {
         case 1:
-            petEnemy = firePet.value;
-            setMovement('Magma Storm', 'Overheat', 'Sunny Day', 2);
-            setName(petEnemy, 2);
+            preparingPet(2, burntrack);
             break;
         case 2:
-            petEnemy = electricPet.value;
-            setMovement('Thunder Punch', 'Overdrive', 'Charge Beam', 2);
-            setName(petEnemy, 2);
+            preparingPet(2, glitch);
             break;
         case 3:
-            petEnemy = darkPet.value;
-            setMovement('Dark Pulse', 'Crunch', 'False Surrender', 2);
-            setName(petEnemy, 2);
+            preparingPet(2, mortus);
             break;
         case 4:
-            petEnemy = fireElectricPet.value;
-            setMovement('Hot Lightning', 'Fast Fireball', 'Magray', 2);
-            setName(petEnemy, 2);
+            preparingPet(2, inferstorm);
             break;
         case 5:
-            petEnemy = fireDarkPet.value;
-            setMovement('Dark Light', 'Negative Eruption', 'Mystical Fire', 2);
-            setName(petEnemy, 2);
+            preparingPet(2, blazen);
             break;
         case 6:
-            petEnemy = electricDarkPet.value;
-            setMovement('Infinite Storm', 'Electro Darkness', 'Last Flash', 2);
-            setName(petEnemy, 2);
+            preparingPet(2, thunneg);
             break;
     }
+    updateHearts(2);
     getImages();
 }
 
+function preparingPet(n, mokepon) {
+    if (n == 1) {
+        setMovementButtons(mokepon.attack, mokepon.healing, mokepon.defend);
+        setName(mokepon.name, 1)
+        playerPetHearts = mokepon.life;
+        playerPetProtection = mokepon.protection;
+    } else if (n == 2) {
+        setMovement(mokepon.attack, mokepon.healing, mokepon.defend, 2);
+        setName(mokepon.name, 2);
+        enemyPetHearts = mokepon.life;
+        enemyPetProtection = mokepon.protection;
+    }
+}
+
 function getImages() {
-    imgPlayerPet.setAttribute('src', './img/' + petName.innerHTML.toLowerCase() + '.png')
+    imgPlayerPet.setAttribute('src', './img/' + playerPetName.innerHTML.toLowerCase() + '.png')
     imgEnemyPet.setAttribute('src', './img/' + enemyPetName.innerHTML.toLowerCase() + '.png')
 }
 
 //We set the value of movements, n is to know if It's player or computer
 function setMovement(attack, regeneration, protection, n) {
     if (n == 1) {
-        attackMovement = attack;
-        regenerationMovement = regeneration;
-        protectionMovement = protection;
+        playerAttackMovement = attack;
+        playerRegenerationMovement = regeneration;
+        playerProtectionMovement = protection;
     } else {
         enemyAttackMovement = attack;
         enemyRegenerationMovement = regeneration;
@@ -235,14 +235,14 @@ function setMovement(attack, regeneration, protection, n) {
 */
 function setName(name, n) {
     if (n == 1) {
-        petName.innerHTML = name;
+        playerPetName.innerHTML = name;
     } else {
         enemyPetName.innerHTML = name;
     }
 }
 
 //These are the functions to define what happens with the player's movements
-function fireMovement() {
+function playerPetAttackMovement() {
     playerMessages.style.display = 'flex'
     enemyMessages.style.display = 'flex'
     createMovementes(1, 1, attackMovementButton.value)
@@ -259,18 +259,18 @@ function fireMovement() {
     }
 }
 
-function electricMovement() {
+function playerPetHealingMovement() {
     createMovementes(1, 2, regenerationMovementButton.value)
-    petHearts++;
+    playerPetHearts++;
     updateHearts(1);
     setPetEnemyAttack();
 }
 
-function darkMovement() {
+function playerPetDefendMovement() {
     createMovementes(1, 3, protectionMovementButton.value)
     playerMessages.style.display = 'flex'
     enemyMessages.style.display = 'flex'
-    petProtection = true;
+    playerPetProtection = true;
     protectionMovementButton.style.backgroundColor = 'rgba(255, 255, 255, 0.727)';
     protectionMovementButton.style.color = 'rgba(0, 0, 0, 0.575)'
     updateHearts(1);
@@ -280,52 +280,52 @@ function darkMovement() {
 //These are the functions to define enemy's movements
 function setPetEnemyAttack() {
     let enemyAttack;
-    if (enemyPetProtection && enemyPetHearts == maximumHearts) {
+    if (enemyPetProtection && enemyPetHearts == maximumEnemyPetHearts) {
         enemyAttack = 1;
     } else if (enemyPetProtection) {
         enemyAttack = getRandom(1, 2);
-    } else if (enemyPetHearts == maximumHearts) {
+    } else if (enemyPetHearts == maximumEnemyPetHearts) {
         enemyAttack = getTwoRandom(1, 3);
     } else {
         enemyAttack = getRandom(1, 3);
     }
     if (enemyAttack == 1) {
-        if (petProtection) {
-            petProtection = false;
+        if (playerPetProtection) {
+            playerPetProtection = false;
             hoverButton(1, protectionMovementButton, '#ffd230', '#554200')
             hoverButton(2, protectionMovementButton, '#FFF', 'black')
             protectionMovementButton.style.backgroundColor = 'rgba(255, 255, 255)';
             protectionMovementButton.style.color = 'rgba(0, 0, 0)'
         } else {
-            petHearts--;
+            playerPetHearts--;
             hoverButton(1, regenerationMovementButton, '#62ff4a', 'rgb(0, 92, 3)')
             hoverButton(2, regenerationMovementButton, '#FFF', 'black')
         }
-        enemyFireMovement();
+        enemyPetAttackMovement();
     } else if (enemyAttack == 2) {
         enemyPetHearts++;
-        enemyElectricMovement();
+        enemyPetHealingMovement();
     } else {
-        enemyDarkMovement();
+        enemyPetDefendMovement();
     }
 }
 
-function enemyFireMovement() {
+function enemyPetAttackMovement() {
     createMovementes(2, 1, enemyAttackMovement)
     updateButtons()
     updateHearts(1)
-    if (petHearts <= 0) {
+    if (playerPetHearts <= 0) {
         result();
     }
 }
 
-function enemyElectricMovement() {
+function enemyPetHealingMovement() {
     createMovementes(2, 2, enemyRegenerationMovement)
     updateButtons()
     updateHearts(2);
 }
 
-function enemyDarkMovement() {
+function enemyPetDefendMovement() {
     createMovementes(2, 3, enemyProtectionMovement)
     updateButtons()
     enemyPetProtection = true;
@@ -349,7 +349,7 @@ function createMovementes(n, type, movement) {
         emoji = '🛡️'
     }
     if (n == 1) {
-        playerMessages.textContent += petName.textContent + ' ' + action + ' with ' + movement + emoji + '\n\n';
+        playerMessages.textContent += playerPetName.textContent + ' ' + action + ' with ' + movement + emoji + '\n\n';
     } else {
         enemyMessages.textContent += enemyPetName.textContent + ' ' + action + ' with ' + movement + emoji + '\n\n';
     }
@@ -357,22 +357,22 @@ function createMovementes(n, type, movement) {
 
 //It works to update the pets' hearts
 function updateHearts(n) {
-    if (petHearts < maximumHearts) {
+    if (playerPetHearts < 8) {
         spanHearts.style.marginBottom = '20px'
     }
-    if (petHearts == 6) {
+    if (playerPetHearts == 6) {
         spanHearts.style.marginBottom = '0px'
     }
 
     if (n == 1) {
-        if (petProtection) {
+        if (playerPetProtection) {
             playerGuard.style.backgroundColor = 'rgb(250, 244, 120)'
             playerShield.style.display = 'inline'
         } else {
             playerShield.style.display = 'none'
             playerGuard.style.backgroundColor = '#FFF'
             enemyPetLife.textContent = enemyPetHearts;
-            petLife.textContent = petHearts;
+            playerPetLife.textContent = playerPetHearts;
         }
     } else if (n == 2) {
         if (enemyPetProtection) {
@@ -381,34 +381,34 @@ function updateHearts(n) {
         } else {
             enemyShield.style.display = 'none'
             enemyGuard.style.backgroundColor = '#FFF'
-            petLife.textContent = petHearts;
+            playerPetLife.textContent = playerPetHearts;
             enemyPetLife.textContent = enemyPetHearts;
         }
     } else if (n == 3) {
-        petLife.textContent = petHearts;
+        playerPetLife.textContent = playerPetHearts;
         enemyPetLife.textContent = enemyPetHearts;
     }
 }
 
 function updateButtons() {
-    if (petHearts <= 0 || enemyPetHearts <= 0) {
+    if (playerPetHearts <= 0 || enemyPetHearts <= 0) {
         attackMovementButton.disabled = true;
         regenerationMovementButton.disabled = true;
         regenerationMovementButton.style.backgroundColor = 'rgba(255, 255, 255, 0.727)';
         regenerationMovementButton.style.color = 'rgba(0, 0, 0, 0.575)'
         protectionMovementButton.disabled = true;
     } else {
-        if (petHearts == maximumHearts && petProtection) {
+        if (playerPetHearts == maximumPlayerPetHearts && playerPetProtection) {
             regenerationMovementButton.disabled = true;
             protectionMovementButton.disabled = true;
             regenerationMovementButton.style.backgroundColor = 'rgba(255, 255, 255, 0.727)';
             regenerationMovementButton.style.color = 'rgba(0, 0, 0, 0.575)'
-        } else if (petHearts == maximumHearts && !petProtection) {
+        } else if (playerPetHearts == maximumPlayerPetHearts && !playerPetProtection) {
             regenerationMovementButton.disabled = true;
             protectionMovementButton.disabled = false;
             regenerationMovementButton.style.backgroundColor = 'rgba(255, 255, 255, 0.727)';
             regenerationMovementButton.style.color = 'rgba(0, 0, 0, 0.575)'
-        } else if (petProtection) {
+        } else if (playerPetProtection) {
             regenerationMovementButton.disabled = false;
             regenerationMovementButton.style.backgroundColor = 'rgba(255, 255, 255)';
             regenerationMovementButton.style.color = 'rgba(0, 0, 0)'
@@ -422,13 +422,13 @@ function updateButtons() {
     }
 }
 
-function hoverButton(n, btn, background, color){
-    if(n == 1){
+function hoverButton(n, btn, background, color) {
+    if (n == 1) {
         btn.addEventListener('mouseover', function () {
             this.style.backgroundColor = background;
             this.style.color = color;
         });
-    } else if(n == 2){
+    } else if (n == 2) {
         btn.addEventListener('mouseout', function () {
             this.style.backgroundColor = background;
             this.style.color = color;
@@ -437,16 +437,19 @@ function hoverButton(n, btn, background, color){
 }
 
 function result() {
-    let paragraph = document.createElement('p');
     let petImage = document.createElement('img');
     petImage.style.width = '285px';
     let textImage = document.createElement('img');
     textImage.style.width = '200px';
-    if (petHearts <= 0) {
-        paragraph.innerHTML = enemyPetName.textContent + ' wins';
-        messagesSection.appendChild(paragraph);
+    if (playerPetHearts <= 0) {
+        petImage.setAttribute('src', './img/' + enemyPetName.innerHTML.toLowerCase() + '.png')
+        messagesSection.style.display = 'flex'
+        messagesSection.style.flexDirection = 'column'
+        messagesSection.style.gap = '20px'
+        messagesSection.appendChild(textImage);
+        messagesSection.appendChild(petImage);
     } else if (enemyPetHearts <= 0) {
-        petImage.setAttribute('src', './img/' + petName.innerHTML.toLowerCase() + '.png')
+        petImage.setAttribute('src', './img/' + playerPetName.innerHTML.toLowerCase() + '.png')
         messagesSection.style.display = 'flex'
         messagesSection.style.flexDirection = 'column'
         messagesSection.style.gap = '20px'
