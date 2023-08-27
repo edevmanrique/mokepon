@@ -11,20 +11,20 @@
 
 <body>
     <header class="header">
-        <h1 class="header__title"><img src="./img/logo.png" alt="logo and title"></h1>
+        <h1 class="header__title"><img src="./img/logo.png" alt="logo and title" draggable="false"></h1>
     </header>
     <section class="start" id="start">
         <button id="start__button">Start the adventure</button>
     </section>
     <section class="select-pet" id="select-pet">
-        <img class="select-pet__select" src="./img/select-pet.png" alt="select a mokepon">
+        <img class="select-pet__select" src="./img/select-pet.png" alt="select a mokepon" draggable="false">
 
         <div class="cards">
             <div class="cards__common" id="cards__common"></div>
             <div class="cards__hybrid" id="cards__hybrid"></div>
         </div>
         <button class="select-pet__fight" id="select-pet__fight">
-            <img src="./img/pokeball.png" alt="">
+            <img src="./img/pokeball.png" alt="Mokeball icon" draggable="false">
             <div class="select-pet__fight__slogan" id="select-pet__fight__slogan">
                 <span>I</span>
                 <span>choose</span>
@@ -34,30 +34,30 @@
 
     </section>
     <section class="map" id="map">
-        <img src="./img/map-title.png" class="map__subtitle" alt="">
+        <img src="./img/map-title.png" class="map__subtitle" alt="Subtitle of the map section" draggable="false">
         <canvas class="map__canvas" id="map__canvas">
         </canvas>
-        <button id="map__top-button" class="map__button-movement top"><img src="./img/arrow.png" alt=""></button>
+        <button id="map__top-button" class="map__button-movement top"><img src="./img/arrow.png" alt="Button to go up"
+                draggable="false"></button>
         <div class="map__side-buttons">
-            <button id="map__left-button" class="map__button-movement left"><img src="./img/arrow.png" alt=""></button>
-            <button id="map__right-button" class="map__button-movement right"><img src="./img/arrow.png"
-                    alt=""></button>
+            <button id="map__left-button" class="map__button-movement left"><img src="./img/arrow.png" alt="Button to go left"
+                    draggable="false"></button>
+            <button id="map__right-button" class="map__button-movement right"><img src="./img/arrow.png" alt="Button to go right"
+                    draggable="false"></button>
         </div>
-        <button id="map__bottom-button" class="map__button-movement bottom"><img src="./img/arrow.png" alt=""></button>
+        <button id="map__bottom-button" class="map__button-movement bottom"><img src="./img/arrow.png" alt="Button to go down"
+                draggable="false"></button>
     </section>
     <section class="select-attack" id="select-attack">
         <div class="select-attack__mokepon-card">
             <div class="select-attack__mokepon-card_info" id="select-attack__my-mokepon-card_info">
                 <div class="select-attack__pet-name">
                     <p><span id="select-attack__my-pet"></span></p>
-                    <div class="select-attack__mokepon-card_element">
-                        <img src="./img/fire.png" alt="">
-                        <img src="./img/dark.png" alt="">
-                        <img id="select-attack__pet-shield" src="./img/shield.png" alt="">
+                    <div class="select-attack__mokepon-card_element" id="player-mokepon-element-container">
                     </div>
                 </div>
                 <div class="select-attack__pet-life">
-                    <img class="select-attack__heart" src="./img/heart.png" alt="">
+                    <img class="select-attack__heart" src="./img/heart.png" alt="hearts icon" draggable="false">
                     <p id="select-attack__my-pet-container"><span id="select-attack__my-pet-hearts"
                             class="select-attack__my-pet-hearts"></span></p>
                 </div>
@@ -65,35 +65,33 @@
             <div class="select-attack__mokepon-card_info" id="select-attack__enemy-mokepon-card_info">
                 <div class="select-attack__pet-name">
                     <p><span id="select-attack__enemy-pet"></p>
-                    <div class="select-attack__mokepon-card_element">
-                        <img src="./img/fire.png" alt="">
-                        <img src="./img/dark.png" alt="">
-                        <img id="select-attack__enemy-pet-shield" src="./img/shield.png" alt="">
+                    <div class="select-attack__mokepon-card_element" id="enemy-mokepon-element-container">
+                        <img id="select-attack__enemy-pet-shield" src="./img/shield.png" alt="" draggable="false">
                     </div>
                 </div>
                 <div class="select-attack__pet-life">
-                    <img class="select-attack__heart" src="./img/heart.png" alt="">
+                    <img class="select-attack__heart" src="./img/heart.png" alt="" draggable="false">
                     <p><span id="select-attack__enemy-pet-hearts" class="select-attack__my-pet-hearts"></span></p>
                 </div>
             </div>
         </div>
         <div class="select-attack__images">
-            <img id="select-attack__images_player-pet" alt="">
-            <img id="select-attack__images_enemy-pet" alt="">
+            <img id="select-attack__images_player-pet" alt="" draggable="false">
+            <img id="select-attack__images_enemy-pet" alt="" draggable="false">
         </div>
         <div class="select-attack__buttons">
-            <img class="select-attack__buttons_subtitle" src="./img/select-attack.png" alt="">
+            <img class="select-attack__buttons_subtitle" src="./img/select-attack.png" alt="" draggable="false">
             <div class="select-attack__buttons_images">
                 <div class="select-attack__buttons_img">
-                    <img src="./img/attack.png" alt="">
+                    <img src="./img/attack.png" alt="" draggable="false">
                     <button class="select-attack__fire" id="select-attack__fire"></button>
                 </div>
                 <div class="select-attack__buttons_img">
-                    <img src="./img/regeneration.png" alt="">
+                    <img src="./img/regeneration.png" alt="" draggable="false">
                     <button class="select-attack__electric" id="select-attack__electric"></button>
                 </div>
                 <div class="select-attack__buttons_img">
-                    <img src="./img/defend.png" alt="">
+                    <img src="./img/defend.png" alt="" draggable="false">
                     <button class="select-attack__darkness" id="select-attack__darkness"></button>
                 </div>
             </div>

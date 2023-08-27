@@ -1,7 +1,3 @@
-//It starts the game after DOM is generated correctly
-const petButton = document.getElementById('select-pet__fight');
-petButton.addEventListener('click', generateMap);
-
 //Setting HTML sections
 const startSection = document.getElementById('start');
 const petsSection = document.getElementById('select-pet');
@@ -15,44 +11,41 @@ messagesSection.style.display = 'none';
 const resetSection = document.getElementById('reset');
 resetSection.style.display = 'none';
 
-let playerId;
+const startButton = document.getElementById('start__button')
+startButton.addEventListener('click', start)
 
-//Setting canvas
-const map = document.getElementById('map__canvas');
+const petButton = document.getElementById('select-pet__fight');
+petButton.addEventListener('click', generateMap);
 
-//Variables to save selected mokepons
+//Variables to save selected mokepons (player and enemy)
 let selectedPlayerMokepon;
 let selectedEnemyMokepon;
 
-//Setting pets names
-const playerPetName = document.getElementById('select-attack__my-pet');
-const enemyPetName = document.getElementById('select-attack__enemy-pet');
+//Setting mokepons array to get each dynamic mokepon selection-card
+let mokeponButton = [];
 
-//Setting pets buttons to choose
-let firePet;
-let electricPet;
-let darkPet;
-let fireElectricPet;
-let fireDarkPet;
-let electricDarkPet;
-
-//Setting player movements
-let playerAttackMovement;
-let playerRegenerationMovement;
-let playerProtectionMovement;
-
-//Setting enemy movements
-let enemyAttackMovement;
-let enemyRegenerationMovement;
-let enemyProtectionMovement;
-
-//Setting canvas variable
+//Variables to Canvas functionality
+const map = document.getElementById('map__canvas');
 let canvas = map.getContext('2d');
 let interval;
 
-//Setting start button
-const startButton = document.getElementById('start__button')
-startButton.addEventListener('click', start)
+//Variables to set pet names in the fights-cards
+const fightCardPlayerPetName = document.getElementById('select-attack__my-pet');
+const fightCardEnemyPetName = document.getElementById('select-attack__enemy-pet');
+
+const playerContainerHearts = document.getElementById('select-attack__my-pet-container')
+
+//Setting the pets' hearts
+let playerPetHearts;
+let enemyPetHearts;
+
+//Setting hearts limits
+let maximumPlayerPetHearts;
+let maximumEnemyPetHearts;
+
+//We get the span with the hearts to update them after a movement
+const playerPetLife = document.getElementById('select-attack__my-pet-hearts')
+const enemyPetLife = document.getElementById('select-attack__enemy-pet-hearts')
 
 //Setting variables to get mokepons image
 const imgPlayerPet = document.getElementById('select-attack__images_player-pet');
@@ -75,28 +68,17 @@ protectionMovementButton.addEventListener('click', playerPetDefendMovement)
 const resetButton = document.getElementById('reset__button');
 resetButton.addEventListener('click', resetGame)
 
-//Setting the pets' hearts
-let playerPetHearts;
-let enemyPetHearts;
-
-//Setting limits
-let maximumPlayerPetHearts;
-let maximumEnemyPetHearts;
-
-//We get the span with the hearts to update them after a movement
-const playerPetLife = document.getElementById('select-attack__my-pet-hearts')
-const enemyPetLife = document.getElementById('select-attack__enemy-pet-hearts')
-
-//Const
-const spanHearts = document.getElementById('select-attack__my-pet-container')
-
 //Blocks to guard movement
 const playerGuard = document.getElementById('select-attack__my-mokepon-card_info')
 const enemyGuard = document.getElementById('select-attack__enemy-mokepon-card_info')
 
+//Elements in the mokepon cards during the fight
+const playerMokeponElementFightCards = document.getElementById('player-mokepon-element-container')
+const enemyMokeponElementFightCards = document.getElementById('enemy-mokepon-element-container')
+
 //Shield images
-const playerShield = document.getElementById('select-attack__pet-shield')
-const enemyShield = document.getElementById('select-attack__enemy-pet-shield')
+let playerShield;
+let enemyShield;
 
 //Textareas to display battle messages/history
 const playerMessages = document.getElementById('messages__playerPet')
@@ -106,9 +88,7 @@ const enemyMessages = document.getElementById('messages__enemyPet')
 let playerPetProtection;
 let enemyPetProtection;
 
-//Variables to save pets elements
-let playerPetElement;
-let enemyPetElement;
+let myMokeponIndex = 0;
 
 //Variables to save pets stats
 let playerPetStrength;
@@ -123,7 +103,6 @@ let moveMokeponRightButton;
 let moveMokeponBottomButton;
 let backgroundMap = new Image();
 backgroundMap.src = './img/mokemap-big.png'
-let reverseMokepon;
 
 //Variable to enemies in the map
 let enemies = [];
@@ -152,11 +131,11 @@ let mapHeightResponsive = currentMapWidth * 600 / 800;
 const mapMaxWidth = 1100;
 const mapMaxHeight = 600;
 
-if(currentMapWidth > mapMaxWidth){
+if (currentMapWidth > mapMaxWidth) {
     currentMapWidth = mapMaxWidth - 20;
 }
 
-if(currentMapHeight > mapMaxHeight){
+if (currentMapHeight > mapMaxHeight) {
     mapHeightResponsive = mapMaxHeight;
 }
 
@@ -174,7 +153,9 @@ let playerOneIcon = {
 
 playerOneIcon.icon.src = './img/p1-icon.png'
 
-//Class to create Mokepons
+//Backend code
+let playerId;
+
 class Mokepon {
     constructor(name, element, image, life, protection, movements, strength, magic, x = (map.width / 2 - (map.width / 2) * .04), y = map.height * .1) {
         this.name = name;
@@ -217,7 +198,7 @@ class Mokepon {
     }
 }
 
-//Creating Mokepons
+//Creating Mokepons as objects
 
 //Unique element
 let burntrack = new Mokepon('Burntrack', ['Fire'], './img/burntrack-no-platform.png', 8, false, ['Magma Storm', 'Overheat', 'Sunny Day'], 2, 1);
@@ -234,18 +215,20 @@ let mokepons = [burntrack, glitch, mortus, inferstorm, blazen, thunneg]
 function start() {
     startSection.style.display = 'none'
     petsSection.style.display = 'flex';
+
+    //We get HTML the two HTML sections, one for normal mokepons, and other for hybrid
     const commonCardDiv = document.getElementById("cards__common");
     const hybridCardDiv = document.getElementById("cards__hybrid");
-    let mokeponCard;
-    let counter = 1;
 
-    mokepons.forEach((mokepon) => {
+    let mokeponCard;
+
+    mokepons.forEach((mokepon, index) => {
 
         if (mokepon.type == 'Common') {
             mokeponCard = `
             <input type="radio" name="pets" id="${mokepon.name.toLowerCase()}" value="${mokepon.name}"
             `
-            if (counter == 1) {
+            if (index == 0) {
                 mokeponCard += `checked`;
             }
 
@@ -255,11 +238,11 @@ function start() {
                 <div class="cards__mokepon-card_info">
                     <p>${mokepon.name}</p>
                     <div class="cards__mokepon-card_element">
-                        <img src="./img/${mokepon.element[0].toLowerCase()}.png" alt="Icon of the ${mokepon.name.toLowerCase()} element">
+                        <img src="./img/${mokepon.element[0].toLowerCase()}.png" alt="Icon of the ${mokepon.name.toLowerCase()} element" draggable="false">
                         <p class="cards__mokepon-card_element-description">${mokepon.element[0]}</p>
                     </div>
                 </div>
-                <img class="cards__mokepon-card_image" src="./img/${mokepon.name.toLowerCase()}.png" alt="">
+                <img class="cards__mokepon-card_image" src="./img/${mokepon.name.toLowerCase()}.png" alt="" draggable="false">
             </label>
         `;
 
@@ -274,34 +257,32 @@ function start() {
                     <div class="cards__mokepon-card_element">
                         <img src="./img/${mokepon.element[0].toLowerCase()}.png" alt="Icon of the ${mokepon.name.toLowerCase()} element">
                         <img src="./img/${mokepon.element[1].toLowerCase()}.png" alt="Icon of the ${mokepon.name.toLowerCase()} second element">
-                        <p class="cards__mokepon-card_element-description">${mokepon.element[0]}</p>
+                        <p class="cards__mokepon-card_element-description">Hybrid</p>
                     </div>
                 </div>
-                <img class="cards__mokepon-card_image" src="./img/${mokepon.name.toLowerCase()}.png" alt="">
+                <img class="cards__mokepon-card_image" src="./img/${mokepon.name.toLowerCase()}.png" alt="" draggable="false">
             </label>
             `
             hybridCardDiv.innerHTML += mokeponCard;
         }
-        counter++;
-
     })
 
-    firePet = document.getElementById('burntrack')
-    electricPet = document.getElementById('glitch')
-    darkPet = document.getElementById('mortus')
-    fireElectricPet = document.getElementById('inferstorm')
-    fireDarkPet = document.getElementById('blazen')
-    electricDarkPet = document.getElementById('thunneg')
+    mokeponButton[0] = document.getElementById('burntrack')
+    mokeponButton[1] = document.getElementById('glitch')
+    mokeponButton[2] = document.getElementById('mortus')
+    mokeponButton[3] = document.getElementById('inferstorm')
+    mokeponButton[4] = document.getElementById('blazen')
+    mokeponButton[5] = document.getElementById('thunneg')
 
     joinVideogame()
 }
 
-function joinVideogame(){
+function joinVideogame() {
     fetch("http://127.0.0.1:8080/join")
-        .then(function(ans) {
-            if(ans.ok){
+        .then(function (ans) {
+            if (ans.ok) {
                 ans.text()
-                    .then(function (answer){
+                    .then(function (answer) {
                         playerId = answer;
                     })
             }
@@ -322,7 +303,7 @@ function getTwoRandom(first, second) {
     }
 }
 
-function saveMokepon(){
+function saveMokepon() {
     fetch(`http://127.0.0.1:8080/mokepon/${playerId}`,
         {
             method: "POST",
@@ -335,78 +316,75 @@ function saveMokepon(){
         })
 }
 
-//We get the selected pet by the player
-function selectPlayerPet() {
+//We get the selected mokepon by the player
+function selectPlayerMokepon() {
     mapSection.style.display = 'none';
     movementsSection.style.display = 'block';
     messagesSection.style.display = 'flex';
     playerMessages.style.display = 'none'
     enemyMessages.style.display = 'none'
-    if (firePet.checked) {
-        selectedPlayerMokepon = burntrack;
-        preparingPet(1);
-        updateHearts(1);
-        GenerateEnemyPet();
-    } else if (electricPet.checked) {
-        selectedPlayerMokepon = glitch;
-        preparingPet(1);
-        updateHearts(1);
-        GenerateEnemyPet();
-    } else if (darkPet.checked) {
-        selectedPlayerMokepon = mortus;
-        preparingPet(1);
-        updateHearts(1);
-        GenerateEnemyPet();
-    } else if (fireElectricPet.checked) {
-        selectedPlayerMokepon = inferstorm;
-        preparingPet(1);
-        updateHearts(1);
-        GenerateEnemyPet();
-    } else if (fireDarkPet.checked) {
-        selectedPlayerMokepon = blazen;
-        preparingPet(1);
-        updateHearts(1);
-        updateButtons();
-        GenerateEnemyPet();
-    } else if (electricDarkPet.checked) {
-        selectedPlayerMokepon = thunneg;
-        preparingPet(1);
-        updateHearts(1);
-        GenerateEnemyPet();
-    } else {
-        alert('You have to select a pet');
-    }
-    updateButtons()
+    preparingMokepon(1);
+    updateHearts(1);
+    GenerateEnemyMokepon();
+    updateButtons();
 }
 
-//We get a random pet to fight agains the computer
-function GenerateEnemyPet() {
-    preparingPet(2);
+//We get a random mokepon to fight agains the computer
+function GenerateEnemyMokepon() {
+    preparingMokepon(2);
     updateHearts(2);
     updateHearts(3);
     getImages();
 }
 
-function preparingPet(n) {
-
+function preparingMokepon(n) {
+    let elementCard;
     if (n == 1) {
         setMovementButtons(selectedPlayerMokepon.movements[0], selectedPlayerMokepon.movements[1], selectedPlayerMokepon.movements[2]);
-        setName(selectedPlayerMokepon.name, 1)
+        fightCardPlayerPetName.innerText = selectedPlayerMokepon.name;
         playerPetHearts = selectedPlayerMokepon.life;
         maximumPlayerPetHearts = selectedPlayerMokepon.life;
         playerPetProtection = selectedPlayerMokepon.protection;
-        playerPetElement = selectedPlayerMokepon.element[0];
         playerPetStrength = selectedPlayerMokepon.strength;
         playerPetMagic = selectedPlayerMokepon.magic;
+
+        if(selectedPlayerMokepon.element.length > 1){
+            elementCard = `
+            <img src="./img/${selectedPlayerMokepon.element[0]}.png" alt="Player mokepon element">
+            <img src="./img/${selectedPlayerMokepon.element[1]}.png" alt="Player mokepon element">
+            <img id="select-attack__player-mokepon-pet-shield" src="./img/shield.png" alt="shield icon" draggable="false">
+            `
+        } else {
+            elementCard = `
+            <img src="./img/${selectedPlayerMokepon.element[0]}.png" alt="Player mokepon element">
+            <img id="select-attack__player-mokepon-pet-shield" src="./img/shield.png" alt="shield icon" draggable="false">
+            `
+        }
+        playerMokeponElementFightCards.innerHTML =  elementCard;
+        playerShield = document.getElementById('select-attack__player-mokepon-pet-shield');
     } else if (n == 2) {
-        setMovement(selectedEnemyMokepon.movements[0], selectedEnemyMokepon.movements[1], selectedEnemyMokepon.movements[2], 2);
-        setName(selectedEnemyMokepon.name, 2);
+        fightCardEnemyPetName.innerText = selectedEnemyMokepon.name;
         enemyPetHearts = selectedEnemyMokepon.life;
         maximumEnemyPetHearts = selectedEnemyMokepon.life;
         enemyPetProtection = selectedEnemyMokepon.protection;
-        enemyPetElement = selectedEnemyMokepon.element[0];
         enemyPetStrength = selectedEnemyMokepon.strength;
         enemyPetMagic = selectedEnemyMokepon.magic;
+
+        if(selectedEnemyMokepon.element.length > 1){
+            elementCard = `
+            <img src="./img/${selectedEnemyMokepon.element[0]}.png" alt="Enemy mokepon element">
+            <img src="./img/${selectedEnemyMokepon.element[1]}.png" alt="Enemy mokepon element">
+            <img id="select-attack__enemy-mokepon-pet-shield" src="./img/shield.png" alt="shield icon" draggable="false">
+            `
+        } else {
+            elementCard = `
+            <img src="./img/${selectedEnemyMokepon.element[0]}.png" alt="Enemy mokepon element">
+            <img id="select-attack__enemy-mokepon-pet-shield" src="./img/shield.png" alt="shield icon" draggable="false">
+            `
+        }
+
+        enemyMokeponElementFightCards.innerHTML =  elementCard;
+        enemyShield = document.getElementById('select-attack__enemy-mokepon-pet-shield');
     }
 }
 
@@ -444,7 +422,6 @@ function arrowUp() {
 }
 
 let check = [];
-let myMokeponIndex = 0;
 
 function getMyMokeponIndex() {
     let counter = 0;
@@ -532,19 +509,18 @@ function setCollisions() {
     fenceBottomLimit = { des: 'fenceBottomLimit', x1: 170, y1: 335, x2: 320, y2: 340 }
 }
 
-//We generate the map
 function generateMap() {
-    if (firePet.checked) {
+    if (mokeponButton[0].checked) {
         selectedPlayerMokepon = burntrack;
-    } else if (electricPet.checked) {
+    } else if (mokeponButton[1].checked) {
         selectedPlayerMokepon = glitch;
-    } else if (darkPet.checked) {
+    } else if (mokeponButton[2].checked) {
         selectedPlayerMokepon = mortus;
-    } else if (fireElectricPet.checked) {
+    } else if (mokeponButton[3].checked) {
         selectedPlayerMokepon = inferstorm;
-    } else if (fireDarkPet.checked) {
+    } else if (mokeponButton[4].checked) {
         selectedPlayerMokepon = blazen;
-    } else if (electricDarkPet.checked) {
+    } else if (mokeponButton[5].checked) {
         selectedPlayerMokepon = thunneg;
     }
     saveMokepon()
@@ -564,7 +540,9 @@ function generateMap() {
 
     moveMokeponTopButton = document.getElementById('map__top-button');
     moveMokeponTopButton.addEventListener('mousedown', moveMokeponTop)
+    moveMokeponTopButton.addEventListener('touchstart', moveMokeponTop)
     moveMokeponTopButton.addEventListener('mouseup', stopMokepon)
+    moveMokeponTopButton.addEventListener('touchend', stopMokepon)
     hoverButtonBG(1, moveMokeponTopButton, '#ff5252', 'white')
     hoverButtonBG(2, moveMokeponTopButton, '#ff2b2b', 'white')
     hoverButtonTS(1, moveMokeponTopButton, 'none', 'translateX(2px)')
@@ -572,7 +550,9 @@ function generateMap() {
 
     moveMokeponLeftButton = document.getElementById('map__left-button');
     moveMokeponLeftButton.addEventListener('mousedown', moveMokeponLeft)
+    moveMokeponLeftButton.addEventListener('touchstart', moveMokeponLeft)
     moveMokeponLeftButton.addEventListener('mouseup', stopMokepon)
+    moveMokeponLeftButton.addEventListener('touchend', stopMokepon)
     hoverButtonBG(1, moveMokeponLeftButton, '#7481f7', 'white')
     hoverButtonBG(2, moveMokeponLeftButton, '#2b40ff', 'white')
     hoverButtonTS(1, moveMokeponLeftButton, 'none', 'translateX(2px)')
@@ -580,7 +560,9 @@ function generateMap() {
 
     moveMokeponRightButton = document.getElementById('map__right-button');
     moveMokeponRightButton.addEventListener('mousedown', moveMokeponRight)
+    moveMokeponRightButton.addEventListener('touchstart', moveMokeponRight)
     moveMokeponRightButton.addEventListener('mouseup', stopMokepon)
+    moveMokeponRightButton.addEventListener('touchend', stopMokepon)
 
     hoverButtonBG(1, moveMokeponRightButton, '#00fd54', 'white')
     hoverButtonBG(2, moveMokeponRightButton, '#00a035', 'white')
@@ -589,7 +571,9 @@ function generateMap() {
 
     moveMokeponBottomButton = document.getElementById('map__bottom-button');
     moveMokeponBottomButton.addEventListener('mousedown', moveMokeponBottom)
+    moveMokeponBottomButton.addEventListener('touchstart', moveMokeponBottom)
     moveMokeponBottomButton.addEventListener('mouseup', stopMokepon)
+    moveMokeponBottomButton.addEventListener('touchend', stopMokepon)
     hoverButtonBG(1, moveMokeponBottomButton, '#ffe959', 'white')
     hoverButtonBG(2, moveMokeponBottomButton, '#e8d100', 'white')
     hoverButtonTS(1, moveMokeponBottomButton, 'none', 'translateX(2px)')
@@ -608,7 +592,7 @@ function checkCollisions() {
         checkCollisionObjects(topLimitRight, 4);
     }
     checkCollisionObjects(bottomLimit, 5);
-        checkCollisionObjects(topStartLimit, 6)
+    checkCollisionObjects(topStartLimit, 6)
     //checkCollisionObjects(firstHouseRightLimit, 1);
     //checkCollisionObjects(secondHouseRightLimit, 1);
     //checkCollisionObjects(laboratoryRightLimit, 1);
@@ -631,7 +615,7 @@ function checkCollisions() {
     //}
 }
 
-function generatePlayerIcon(){
+function generatePlayerIcon() {
     canvas.drawImage(
         playerOneIcon.icon,
         playerOneIcon.x,
@@ -641,23 +625,22 @@ function generatePlayerIcon(){
     );
 }
 
-function savePosition(x, y){
+function savePosition(x, y) {
     fetch(`http://127.0.0.1:8080/mokepon/${playerId}/position`,
-    {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            x,
-            y
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                x,
+                y
+            })
         })
-    })
         .then(function (ans) {
-            if(ans.ok){
+            if (ans.ok) {
                 ans.json()
-                    .then(function ({ enemies }){
-                        console.log(enemies)
+                    .then(function ({ enemies }) {
                     })
             }
         })
@@ -702,7 +685,6 @@ function moveMokeponRight() {
 }
 
 function moveMokeponLeft() {
-    reverseMokepon = false;
     drawCanvas();
     if (!isCollidingLeft) {
         selectedPlayerMokepon.velocityX = -5;
@@ -827,7 +809,6 @@ function checkCollisionObjects(limit, n) {
 
 //Checking collision with enemies
 function checkCollisionEnemies(enemy) {
-    selectedEnemyMokepon = enemy;
     const upEnemy = enemy.y;
     const bottomEnemy = enemy.y + enemy.height;
     const leftEnemy = enemy.x;
@@ -841,10 +822,12 @@ function checkCollisionEnemies(enemy) {
     if (bottomPlayer < upEnemy || upPlayer > bottomEnemy || rightPlayer < leftEnemy || leftPlayer > rightEnemy) {
         return;
     } else {
+        window.removeEventListener('keydown', arrowDown);
+        window.removeEventListener('keydown', arrowUp);
+        selectedEnemyMokepon = enemy;
         stopMokepon();
         currentEnemy = enemy.name;
-        alert(`${enemy.name} is your oponent`)
-        selectPlayerPet();
+        selectPlayerMokepon();
     }
 }
 
@@ -861,32 +844,8 @@ function setMovementButtons(attack, regeneration, protection) {
 }
 
 function getImages() {
-    imgPlayerPet.setAttribute('src', './img/' + playerPetName.innerText.toLowerCase() + '.png')
-    imgEnemyPet.setAttribute('src', './img/' + enemyPetName.innerText.toLowerCase() + '.png')
-}
-
-//We set the value of movements, n is to know if It's player or computer
-function setMovement(attack, regeneration, protection, n) {
-    if (n == 1) {
-        playerAttackMovement = attack;
-        playerRegenerationMovement = regeneration;
-        playerProtectionMovement = protection;
-    } else {
-        enemyAttackMovement = attack;
-        enemyRegenerationMovement = regeneration;
-        enemyProtectionMovement = protection;
-    }
-}
-
-/*We get the name of selectPlayerPet function to add it dynamically to the battle section
- * n variable is to know if is called by player or enemy
-*/
-function setName(name, n) {
-    if (n == 1) {
-        playerPetName.innerText = name;
-    } else {
-        enemyPetName.innerText = name;
-    }
+    imgPlayerPet.setAttribute('src', './img/' + selectedPlayerMokepon.name + '.png')
+    imgEnemyPet.setAttribute('src', './img/' + selectedEnemyMokepon.name + '.png')
 }
 
 //These are the functions to define what happens with the player's movements
@@ -962,7 +921,7 @@ function setPetEnemyAttack() {
 }
 
 function enemyPetAttackMovement() {
-    createMovementes(2, 1, enemyAttackMovement)
+    createMovementes(2, 1, selectedEnemyMokepon.movements[0])
     updateButtons()
     updateHearts(1)
     if (playerPetHearts <= 0) {
@@ -971,13 +930,13 @@ function enemyPetAttackMovement() {
 }
 
 function enemyPetHealingMovement() {
-    createMovementes(2, 2, enemyRegenerationMovement)
+    createMovementes(2, 2, selectedEnemyMokepon.movements[1])
     updateButtons()
     updateHearts(2);
 }
 
 function enemyPetDefendMovement() {
-    createMovementes(2, 3, enemyProtectionMovement)
+    createMovementes(2, 3, selectedEnemyMokepon.movements[2])
     updateButtons()
     enemyPetProtection = true;
     updateHearts(2);
@@ -1000,19 +959,19 @@ function createMovementes(n, type, movement) {
         emoji = '🛡️'
     }
     if (n == 1) {
-        playerMessages.textContent += playerPetName.textContent + ' ' + action + ' with ' + movement + emoji + '\n\n';
+        playerMessages.textContent += fightCardPlayerPetName.textContent + ' ' + action + ' with ' + movement + emoji + '\n\n';
     } else {
-        enemyMessages.textContent += enemyPetName.textContent + ' ' + action + ' with ' + movement + emoji + '\n\n';
+        enemyMessages.textContent += fightCardEnemyPetName.textContent + ' ' + action + ' with ' + movement + emoji + '\n\n';
     }
 }
 
 //It works to update the pets' hearts
 function updateHearts(n) {
     if (playerPetHearts < 8) {
-        spanHearts.style.marginBottom = '20px'
+        playerContainerHearts.style.marginBottom = '20px'
     }
     if (playerPetHearts == 6) {
-        spanHearts.style.marginBottom = '0px'
+        playerContainerHearts.style.marginBottom = '0px'
     }
 
     if (n == 1) {
@@ -1113,14 +1072,14 @@ function result() {
     textImage.style.width = '200px';
     if (enemies.length == 1) {
         if (playerPetHearts <= 0) {
-            petImage.setAttribute('src', './img/' + enemyPetName.innerText.toLowerCase() + '.png')
+            petImage.setAttribute('src', './img/' + fightCardEnemyPetName.innerText.toLowerCase() + '.png')
             messagesSection.style.display = 'flex'
             messagesSection.style.flexDirection = 'column'
             messagesSection.style.gap = '20px'
             messagesSection.appendChild(textImage);
             messagesSection.appendChild(petImage);
         } else if (enemyPetHearts <= 0) {
-            petImage.setAttribute('src', './img/' + playerPetName.innerText.toLowerCase() + '.png')
+            petImage.setAttribute('src', './img/' + fightCardPlayerPetName.innerText.toLowerCase() + '.png')
             messagesSection.style.display = 'flex'
             messagesSection.style.flexDirection = 'column'
             messagesSection.style.gap = '20px'
@@ -1134,7 +1093,7 @@ function result() {
         enemyMessages.style.display = 'none'
     } else {
         if (playerPetHearts <= 0) {
-            petImage.setAttribute('src', './img/' + enemyPetName.innerText.toLowerCase() + '.png')
+            petImage.setAttribute('src', './img/' + fightCardEnemyPetName.innerText.toLowerCase() + '.png')
             messagesSection.style.display = 'flex'
             messagesSection.style.flexDirection = 'column'
             messagesSection.style.gap = '20px'
@@ -1153,6 +1112,12 @@ function result() {
                     break;
                 }
             }
+
+            //We clear the textarea content to the new fight
+            playerMessages.textContent = '';
+            enemyMessages.textContent = '';
+            window.addEventListener('keydown', arrowDown);
+            window.addEventListener('keyup', arrowUp);
 
             movementsSection.style.display = 'none';
             playerMessages.style.display = 'none'

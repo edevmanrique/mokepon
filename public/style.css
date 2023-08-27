@@ -1,11 +1,6 @@
 @font-face {
-    font-family: "pokemonsolid";
-    src: url("./fonts/pokemonsolid.ttf");
-}
-
-@font-face {
     font-family: "pixel";
-    src: url("./fonts/pixel-2.ttf");
+    src: url("./fonts/pixel.ttf");
 }
 
 @font-face {
@@ -28,6 +23,10 @@ body {
 
 input[type="radio"]:checked+.cards__mokepon-card {
     background-color: rgb(254, 254, 192);
+}
+
+button{
+    user-select: none;
 }
 
 .header {
@@ -516,6 +515,10 @@ footer{
     .cards{
         flex-direction: column;
         gap: 0px;
+    }
+
+    .map__subtitle{
+        width: 85vw;
     }
 
     .select-pet__fight img{

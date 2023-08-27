@@ -2,6 +2,7 @@ const express = require("express")
 const cors = require("cors")
 
 const app = express()
+app.use(express.static('public'))
 app.use(cors())
 app.use(express.json())
 
@@ -49,7 +50,6 @@ app.post("/mokepon/:playerId", (req, ans) => {
         players[playerIndex].setMokepon(mokepon);
     }
 
-    console.log(players)
     ans.end()
 })
 
