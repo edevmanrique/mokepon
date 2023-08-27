@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="./img/mokeball.png" type="image/x-icon">
     <title>Mokepon: Fire and Darkness</title>
     <link rel="stylesheet" href="./style.css">
 </head>
@@ -19,93 +20,30 @@
         <img class="select-pet__select" src="./img/select-pet.png" alt="select a mokepon">
 
         <div class="cards">
-            <div class="cards__common">
-                <input type="radio" name="pets" id="burntrack" value="Burntrack" checked>
-                <label class="cards__mokepon-card burntrack" for="burntrack">
-                    <div class="cards__mokepon-card_info">
-                        <p>Burntrack</p>
-                        <div class="cards__mokepon-card_element">
-                            <img src="./img/fire.png" alt="">
-                            <p class="cards__mokepon-card_element-description">Fire</p>
-                        </div>
-                    </div>
-                    <img class="cards__mokepon-card_image" src="./img/burntrack.png" alt="">
-                </label>
-
-                <input type="radio" name="pets" id="glitch" value="Glitch">
-                <label class="cards__mokepon-card glitch" for="glitch">
-                    <div class="cards__mokepon-card_info">
-                        <p>Glitch</p>
-                        <div class="cards__mokepon-card_element">
-                            <img src="./img/ray.png" alt="">
-                            <p class="cards__mokepon-card_element-description">Electric</p>
-                        </div>
-                    </div>
-                    <img class="cards__mokepon-card_image" src="./img/glitch.png" alt="">
-                </label>
-
-                <input type="radio" name="pets" id="mortus" value="Mortus">
-                <label class="cards__mokepon-card mortus" for="mortus">
-                    <div class="cards__mokepon-card_info">
-                        <p>Mortus</p>
-                        <div class="cards__mokepon-card_element">
-                            <img src="./img/dark.png" alt="">
-                            <p class="cards__mokepon-card_element-description">Dark</p>
-                        </div>
-                    </div>
-                    <img class="cards__mokepon-card_image" src="./img/mortus.png" alt="">
-                </label>
-            </div>
-            <div class="cards__hybrid">
-                <input type="radio" name="pets" id="inferstorm" value="Inferstorm">
-                <label class="cards__mokepon-card inferstorm" for="inferstorm">
-                    <div class="cards__mokepon-card_info">
-                        <p>Inferstorm</p>
-                        <div class="cards__mokepon-card_element">
-                            <img src="./img/fire.png" alt="">
-                            <img src="./img/ray.png" alt="">
-                            <p class="cards__mokepon-card_element-description">Hybrid</p>
-                        </div>
-                    </div>
-                    <img class="cards__mokepon-card_image" src="./img/inferstorm.png" alt="">
-                </label>
-
-                <input type="radio" name="pets" id="blazen" value="Blazen">
-                <label class="cards__mokepon-card blazen" for="blazen">
-                    <div class="cards__mokepon-card_info">
-                        <p>Blazen</p>
-                        <div class="cards__mokepon-card_element">
-                            <img src="./img/fire.png" alt="">
-                            <img src="./img/dark.png" alt="">
-                            <p class="cards__mokepon-card_element-description">Hybrid</p>
-                        </div>
-                    </div>
-                    <img class="cards__mokepon-card_image" src="./img/blazen.png" alt="">
-                </label>
-
-                <input type="radio" name="pets" id="thunneg" value="Thunneg">
-                <label class="cards__mokepon-card thunneg" for="thunneg">
-                    <div class="cards__mokepon-card_info">
-                        <p>Thunneg</p>
-                        <div class="cards__mokepon-card_element">
-                            <img src="./img/ray.png" alt="">
-                            <img src="./img/dark.png" alt="">
-                            <p class="cards__mokepon-card_element-description">Hybrid</p>
-                        </div>
-                    </div>
-                    <img class="cards__mokepon-card_image" src="./img/thunneg.png" alt="">
-                </label>
-            </div>
+            <div class="cards__common" id="cards__common"></div>
+            <div class="cards__hybrid" id="cards__hybrid"></div>
         </div>
         <button class="select-pet__fight" id="select-pet__fight">
-            <img src="../mokepon/img/pokeball.png" alt="">
-            <div class="select-pet__fight__slogan">
+            <img src="./img/pokeball.png" alt="">
+            <div class="select-pet__fight__slogan" id="select-pet__fight__slogan">
                 <span>I</span>
                 <span>choose</span>
                 <span>You!</span>
             </div>
         </button>
 
+    </section>
+    <section class="map" id="map">
+        <img src="./img/map-title.png" class="map__subtitle" alt="">
+        <canvas class="map__canvas" id="map__canvas">
+        </canvas>
+        <button id="map__top-button" class="map__button-movement top"><img src="./img/arrow.png" alt=""></button>
+        <div class="map__side-buttons">
+            <button id="map__left-button" class="map__button-movement left"><img src="./img/arrow.png" alt=""></button>
+            <button id="map__right-button" class="map__button-movement right"><img src="./img/arrow.png"
+                    alt=""></button>
+        </div>
+        <button id="map__bottom-button" class="map__button-movement bottom"><img src="./img/arrow.png" alt=""></button>
     </section>
     <section class="select-attack" id="select-attack">
         <div class="select-attack__mokepon-card">

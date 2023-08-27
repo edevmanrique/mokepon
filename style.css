@@ -26,22 +26,8 @@ body {
     height: 100vh;
 }
 
-.start {
-    display: flex;
-    justify-content: center;
-}
-
-.start button {
-    border: none;
-    background-color: rgba(14, 15, 17, 0);
-    color: rgb(255, 48, 48);
-    font-size: 40px;
-    font-family: "pixel";
-}
-
-.start button:hover {
-    cursor: pointer;
-    color: rgb(255, 230, 0);
+input[type="radio"]:checked+.cards__mokepon-card {
+    background-color: rgb(254, 254, 192);
 }
 
 .header {
@@ -58,6 +44,24 @@ body {
 
 .header__title img {
     width: 40%;
+}
+
+.start {
+    display: flex;
+    justify-content: center;
+}
+
+.start button {
+    border: none;
+    background-color: rgba(14, 15, 17, 0);
+    color: rgb(255, 48, 48);
+    font-size: 40px;
+    font-family: "pixel";
+}
+
+.start button:hover {
+    cursor: pointer;
+    color: rgb(255, 230, 0);
 }
 
 .select-pet {
@@ -97,12 +101,6 @@ body {
     overflow: hidden;
 }
 
-.cards__mokepon-card img {
-    margin-top: 40px;
-    width: 110px;
-    height: 100px;
-}
-
 .cards__mokepon-card:hover {
     background-color: rgb(254, 254, 192);
     cursor: pointer;
@@ -112,8 +110,10 @@ body {
     background-color: rgb(255, 255, 71);
 }
 
-input[type="radio"]:checked+.cards__mokepon-card {
-    background-color: rgb(254, 254, 192);
+.cards__mokepon-card img {
+    margin-top: 40px;
+    width: 110px;
+    height: 100px;
 }
 
 .burntrack p {
@@ -164,6 +164,12 @@ input[type="radio"]:checked+.cards__mokepon-card {
     height: 100%;
 }
 
+.cards__mokepon-card_info img {
+    width: 15px;
+    height: 17px;
+    margin-bottom: 2.2px;
+}
+
 .cards__mokepon-card_element {
     display: flex;
     flex-direction: row;
@@ -176,17 +182,6 @@ input[type="radio"]:checked+.cards__mokepon-card {
 .cards__mokepon-card_info>.cards__mokepon-card_element>.cards__mokepon-card_element-description {
     font-size: 16px;
     color: black;
-}
-
-.cards__mokepon-card_info img {
-    width: 15px;
-    height: 17px;
-    margin-bottom: 2.2px;
-}
-
-.cards__mokepon-card_element {
-    display: flex;
-    flex-direction: row;
 }
 
 .select-pet__fight {
@@ -207,13 +202,6 @@ input[type="radio"]:checked+.cards__mokepon-card {
     position: relative;
 }
 
-.select-pet__fight__slogan{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 5px;
-}
-
 .select-pet__fight:hover{
     cursor: pointer;
 }
@@ -221,6 +209,12 @@ input[type="radio"]:checked+.cards__mokepon-card {
 .select-pet__fight img{
     width: 35px;
     position: absolute;
+}
+
+.select-pet__fight:hover > img{
+    animation-name: down;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
 }
 
 .select-pet__fight span{
@@ -235,10 +229,84 @@ input[type="radio"]:checked+.cards__mokepon-card {
     animation-fill-mode: forwards;
 }
 
-.select-pet__fight:hover > img{
-    animation-name: down;
-    animation-duration: 1s;
-    animation-fill-mode: forwards;
+.select-pet__fight__slogan{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.map{
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.map button{
+    outline: none;
+}
+
+.map__subtitle{
+    width: 600px;
+}
+
+.map__canvas{
+    margin-top: 50px;
+    margin-bottom: 30px;
+    border-radius: 15px;
+}
+
+.map__button-movement{
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+}
+
+.top{
+    background-color: #ff2b2b;
+    box-shadow: 2px 2px 1px rgb(158, 0, 0);
+    transition: box-shadow 0.05s ease;
+    transition: margin-left 0.s ease;
+}
+
+.top img{
+    transform: rotate(180deg);
+}
+
+.map__side-buttons{
+    display: flex;
+    gap: 40px;
+}
+
+.left{
+    background-color: #2b40ff;
+    box-shadow: 2px 2px 1px rgb(0, 45, 179);
+}
+
+.left img{
+    transform: rotate(90deg);
+}
+
+.right{
+    background-color: #00a035;
+    box-shadow: 2px 2px 1px rgb(0, 114, 10);
+}
+
+.right img{
+    transform: rotate(270deg);
+}
+
+.bottom{
+    background-color: #e8d100;
+    box-shadow: 2px 2px 1px rgb(0, 114, 10);
+    margin-bottom: 70px;
+}
+
+.map__button-movement img{
+    width: 25px;
+    height: 25px;
 }
 
 .select-attack{
@@ -246,6 +314,13 @@ input[type="radio"]:checked+.cards__mokepon-card {
     flex-direction: column;
     align-items: center;
     margin: 0px 200px;
+}
+
+.select-attack__mokepon-card{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 250px;
 }
 
 .select-attack__mokepon-card_info{
@@ -265,19 +340,12 @@ input[type="radio"]:checked+.cards__mokepon-card {
     overflow: hidden;
 }
 
-.select-attack__mokepon-card{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 250px;
+.select-attack__pet-name img{
+    width: 30px;
 }
 
 .select-attack__mokepon-card_element img:nth-child(3){
     display: none;
-}
-
-.select-attack__pet-name img{
-    width: 30px;
 }
 
 .select-attack__pet-life{
@@ -286,13 +354,13 @@ input[type="radio"]:checked+.cards__mokepon-card {
     align-items: center;
 }
 
-.select-attack__my-pet-hearts{
-    font-size: 70px;
-}
-
 .select-attack__heart{
     width: 70px;
     margin-left: 3px;
+}
+
+.select-attack__my-pet-hearts{
+    font-size: 70px;
 }
 
 .select-attack__images{
@@ -318,6 +386,21 @@ input[type="radio"]:checked+.cards__mokepon-card {
     align-items: center;
 }
 
+.select-attack__buttons button{
+    width: 280px;
+    padding: 10px 0px;
+    border: none;
+    border-radius: 5px;
+    font-family: "raleway";
+    background-color: white;
+    color: black;
+    box-shadow: -1px 3px 3px black;
+}
+
+.select-attack__buttons button:hover{
+    cursor: pointer;
+}
+
 .select-attack__buttons_subtitle {
     width: 600px;
     margin-bottom: 30px;
@@ -341,21 +424,6 @@ input[type="radio"]:checked+.cards__mokepon-card {
 
 .select-attack__buttons_img img{
     width: 110px;
-}
-
-.select-attack__buttons button{
-    width: 280px;
-    padding: 10px 0px;
-    border: none;
-    border-radius: 5px;
-    font-family: "raleway";
-    background-color: white;
-    color: black;
-    box-shadow: -1px 3px 3px black;
-}
-
-.select-attack__buttons button:hover{
-    cursor: pointer;
 }
 
 .select-attack__fire:hover{
@@ -427,9 +495,10 @@ footer{
     font-family: 'pixel';
     position: fixed;
     bottom: 0;
+    border-top: 1px solid black;
 }
 
-@media(max-width: 415px){
+@media(max-width: 736px){
     .header__title img {
         width: 80%;
     }
@@ -447,6 +516,10 @@ footer{
     .cards{
         flex-direction: column;
         gap: 0px;
+    }
+
+    .select-pet__fight img{
+        width: 25px;
     }
 
     .select-attack__mokepon-card{

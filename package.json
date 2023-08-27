@@ -1,0 +1,29 @@
+{
+  "name": "mokepon",
+  "version": "1.0.0",
+  "description": "Web videogame based on Pokemon, with several Mokepons with different elements, movements and a map to explore the Mokeworld. Dare to try it!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/edmanrique/mokepon.git"
+  },
+  "keywords": [
+    "pokemon",
+    "videogame",
+    "mokepon",
+    "webgame"
+  ],
+  "author": "edmanriquer <edmanriquer@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/edmanrique/mokepon/issues"
+  },
+  "homepage": "https://github.com/edmanrique/mokepon#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2"
+  }
+}
